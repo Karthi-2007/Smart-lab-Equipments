@@ -8,7 +8,7 @@ function Home() {
     <div className="home">
       <div className="hero">
         <h1>
-          Smart Lab Equipment Booking &
+          Smart Lab Equipment Bookingsss &
           Predictive Maintenance Platform
         </h1>
 
