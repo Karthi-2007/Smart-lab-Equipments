@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./Login.css";
+import { Navigate, useNavigate } from "react-router";
 
 function Login() {
+  const navigate=useNavigate();
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -57,6 +59,7 @@ function Login() {
           <button type="submit" className="login-btn">
             Login
           </button>
+          <p>If you don't have an account plz Register?<a href="/register" target="_parent" style={{lineHeight:"40px"}} >Register</a></p>
         </form>
 
         <p className="footer-text">
