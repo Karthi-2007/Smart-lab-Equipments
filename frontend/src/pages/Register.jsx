@@ -114,6 +114,7 @@ function Register() {
           <button className="register-btn" type="submit">
             Register
           </button>
+          <p>Already have an Account?  <a href="/login" target="_parent" style={{lineHeight:"40px"}} >Login</a></p>
         </form>
       </div>
     </div>

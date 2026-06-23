@@ -59,7 +59,7 @@ function Login() {
           <button type="submit" className="login-btn">
             Login
           </button>
-          <p>If you don't have an account plz Register?<a href="/register" target="_parent" style={{lineHeight:"40px"}} >Register</a></p>
+          <p style={{textAlign:"center"}}>don't have an account?  <a href="/register" target="_parent" style={{lineHeight:"40px"}} >Register</a></p>
         </form>
 
         <p className="footer-text">
