@@ -1,16 +1,92 @@
-# React + Vite
+# Smart Lab Equipments - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React + Vite frontend application for managing smart lab equipment.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React** 19.2.6 - UI library
+- **Vite** 8.0.12 - Build tool & dev server
+- **React Router** 7.17.0 - Client-side routing
+- **Bootstrap** 5.3.8 - CSS framework
+- **Recharts** 3.9.0 - Data visualization
+- **Axios** 1.18.1 - HTTP client
+- **React Icons** 5.6.0 - Icon library
 
-## React Compiler
+## Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```
+frontend/
+├── src/
+│   ├── components/        # Reusable UI components
+│   ├── pages/            # Page components
+│   ├── routes/           # Route configuration
+│   ├── services/         # API services
+│   ├── context/          # React Context
+│   ├── data/             # Static data & constants
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── public/               # Static assets
+├── index.html
+├── vite.config.js
+└── package.json
+```
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+- Node.js 16+ 
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+Starts the development server at `http://localhost:5173`
+
+### Build
+
+```bash
+npm run build
+```
+
+Creates an optimized production build in the `dist/` directory
+
+### Preview
+
+```bash
+npm run preview
+```
+
+Preview the production build locally
+
+### Linting
+
+```bash
+npm run lint
+```
+
+Run ESLint to check code quality
+
+## Environment Variables
+
+Create a `.env` file in the frontend directory:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+## Contributing
+
+1. Follow ESLint rules
+2. Keep components modular and reusable
+3. Use React Context for state management when needed
+4. Document complex components with comments
