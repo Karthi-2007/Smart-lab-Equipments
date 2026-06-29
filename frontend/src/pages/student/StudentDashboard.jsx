@@ -1,5 +1,14 @@
 import { Link} from "react-router-dom";
 import "../Dashboard.css";
+import {
+  FaTachometerAlt,   // Dashboard
+  FaTools,           // Equipment
+  FaCalendarCheck,   // Booking
+  FaHistory,         // Usage History
+  FaExclamationTriangle, // Fault
+  FaUser,            // Profile
+  FaSignOutAlt       // Logout
+} from "react-icons/fa";
 
 const equipmentImages = {
   oscilloscope: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80",
@@ -35,27 +44,27 @@ function StudentDashboard() {
 
         <nav className="sd-nav">
           <Link to="/student/dashboard" className="sd-nav-item sd-nav-item--active">
-           <span className="sd-nav-icon">◈</span> Dashboard
+           <FaTachometerAlt className="sd-nav-icon" /> Dashboard
           </Link>
           <Link to="/student/equipment" className="sd-nav-item">
-            <span className="sd-nav-icon">⊡</span> Equipment List
+            <FaTools  className="sd-nav-icon"/> Equipment List
           </Link>
           <Link to="/student/book" className="sd-nav-item">
-            <span className="sd-nav-icon">◷</span> Book Equipment
+            <FaCalendarCheck className="sd-nav-icon"/> Book Equipment
           </Link>
           <Link to="/student/usage" className="sd-nav-item">
-            <span className="sd-nav-icon">◎</span> Usage History
+            <FaHistory className="sd-nav-icon"/> Usage History
           </Link>
           <Link to="/student/fault" className="sd-nav-item">
-            <span className="sd-nav-icon">⚠</span> Fault Reporting
+            <FaExclamationTriangle className="sd-nav-icon"/> Fault Reporting
           </Link>
           <Link to="/student/profile" className="sd-nav-item">
-            <span className="sd-nav-icon">◯</span> Profile
+            <FaUser className="sd-nav-icon"/> Profile
           </Link>
         </nav>
 
         <Link to="/logout" className="sd-logout">
-          <span>↩</span> Logout
+          <FaSignOutAlt className="sd-nav-icon"/> Logout
         </Link>
       </aside>
 
