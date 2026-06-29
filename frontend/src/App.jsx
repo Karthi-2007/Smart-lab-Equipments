@@ -33,7 +33,7 @@ function NotFound() {
 
 function App() {
   return (
-    <BrowserRouter>
+    
       <AuthProvider>
         <Routes>
           {/* Auth Routes */}
@@ -62,7 +62,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
-    </BrowserRouter>
   );
 }
 

@@ -6,7 +6,7 @@ export const MOCK_EQUIPMENT = [
     category: "Electronic Measurement",
     status: "available",
     description: "Digital Oscilloscope 200MHz",
-    specifications: "200MHz, 2 GSa/s, 7" TFT Display",
+    specifications: "200MHz, 2 GSa/s, 7 TFT Display",
     image: "🔬",
     location: "Lab A - Bench 1",
     maintenanceDate: "2026-07-15",

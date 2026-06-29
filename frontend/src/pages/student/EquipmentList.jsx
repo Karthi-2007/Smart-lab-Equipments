@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./student/EquipmentList.css";
-import { MOCK_EQUIPMENT } from "../data/mockData";
+import "../student/EquipmentList.css";
+import { MOCK_EQUIPMENT } from "/src/data/mockData";
 
 function EquipmentList() {
   const navigate = useNavigate();
