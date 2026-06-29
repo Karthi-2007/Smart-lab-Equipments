@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StudentSidebar from "../../components/StudentSidebar";
+import StudentSidebar from "../src/components/StudentSidebar";
 import "../Dashboard.css";
 import "./UsageHistory.css";
 

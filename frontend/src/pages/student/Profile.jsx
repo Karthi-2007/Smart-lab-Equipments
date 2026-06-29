@@ -1,6 +1,6 @@
 import { useState } from "react";
-import StudentSidebar from "../../components/StudentSidebar";
-import { useAuth } from "../../context/AuthContext";
+import StudentSidebar from "./components/StudentSidebar";
+import { useAuth } from "./context/AuthContext.jsx";
 import "../Dashboard.css";
 import "./Profile.css";
 
