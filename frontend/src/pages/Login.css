@@ -120,7 +120,11 @@
 }
 
 .login-demo p { margin-bottom: 4px; font-weight: 600; }
-.login-demo code { font-size: 12px; }
+.login-demo code {
+  display: block;
+  font-size: 12px;
+  margin-top: 4px;
+}
 
 @media (max-width: 480px) {
   .login-card { padding: 28px 20px; }
