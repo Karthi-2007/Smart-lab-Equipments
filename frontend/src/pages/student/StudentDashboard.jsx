@@ -1,227 +1,245 @@
-import { Link} from "react-router-dom";
-import "../Dashboard.css";
-import {
-  FaTachometerAlt,   // Dashboard
-  FaTools,           // Equipment
-  FaCalendarCheck,   // Booking
-  FaHistory,         // Usage History
-  FaExclamationTriangle, // Fault
-  FaUser,            // Profile
-  FaSignOutAlt       // Logout
-} from "react-icons/fa";
-
-const equipmentImages = {
-  oscilloscope: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80",
-  printer3d: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
-  laptop: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80",
-};
-
-const recentBookings = [
-  { id: 1, equipment: "Oscilloscope DSO-3104", lab: "Electronics Lab", date: "Jun 22, 2026", status: "Completed", statusClass: "status-done" },
-  { id: 2, equipment: "3D Printer Ender 5", lab: "Prototyping Lab", date: "Jun 21, 2026", status: "Completed", statusClass: "status-done" },
-  { id: 3, equipment: "CNC Milling Machine", lab: "Mech Lab", date: "Jun 24, 2026", status: "Active", statusClass: "status-active" },
-  { id: 4, equipment: "Spectrum Analyser", lab: "RF Lab", date: "Jun 25, 2026", status: "Upcoming", statusClass: "status-upcoming" },
-];
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import "./StudentDashboard.css";
+import { MOCK_BOOKINGS, MOCK_EQUIPMENT, STATS } from "../../data/mockData";
 
 function StudentDashboard() {
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  // Filter bookings for current student
+  const studentBookings = MOCK_BOOKINGS.filter(b => b.studentName === user?.name);
+  const confirmedBookings = studentBookings.filter(b => b.status === "confirmed");
+  const pendingBookings = studentBookings.filter(b => b.status === "pending");
+  const completedBookings = studentBookings.filter(b => b.status === "completed");
+
   return (
-    <div className="sd-root">
-
-      {/* ── Sidebar ── */}
-      <aside className="sd-sidebar">
-        <div className="sd-brand">
-          <span className="sd-brand-icon">⚗</span>
-          <span className="sd-brand-name">LabSync<em>AI</em></span>
+    <div className="student-dashboard">
+      <div className="dashboard-header">
+        <div>
+          <h1>Welcome, {user?.name}! 👋</h1>
+          <p>Smart Lab Equipment Booking System</p>
         </div>
+        <div className="user-info-card">
+          <p><strong>Registration No:</strong> {user?.regNo}</p>
+          <p><strong>Department:</strong> {user?.dept}</p>
+          <p><strong>Year:</strong> {user?.year}</p>
+        </div>
+      </div>
 
-        <div className="sd-user">
-          <div className="sd-avatar">KS</div>
-          <div>
-            <div className="sd-user-name">Karthikeyan S</div>
-            <div className="sd-user-role">Student · IT Dept</div>
+      {/* Quick Stats */}
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon">📅</div>
+          <div className="stat-content">
+            <h3>{confirmedBookings.length}</h3>
+            <p>Active Bookings</p>
           </div>
         </div>
-
-        <nav className="sd-nav">
-          <Link to="/student/dashboard" className="sd-nav-item sd-nav-item--active">
-           <FaTachometerAlt className="sd-nav-icon" /> Dashboard
-          </Link>
-          <Link to="/student/equipment" className="sd-nav-item">
-            <FaTools  className="sd-nav-icon"/> Equipment List
-          </Link>
-          <Link to="/student/book" className="sd-nav-item">
-            <FaCalendarCheck className="sd-nav-icon"/> Book Equipment
-          </Link>
-          <Link to="/student/usage" className="sd-nav-item">
-            <FaHistory className="sd-nav-icon"/> Usage History
-          </Link>
-          <Link to="/student/fault" className="sd-nav-item">
-            <FaExclamationTriangle className="sd-nav-icon"/> Fault Reporting
-          </Link>
-          <Link to="/student/profile" className="sd-nav-item">
-            <FaUser className="sd-nav-icon"/> Profile
-          </Link>
-        </nav>
-
-        <Link to="/logout" className="sd-logout">
-          <FaSignOutAlt className="sd-nav-icon"/> Logout
-        </Link>
-      </aside>
-
-      {/* ── Main ── */}
-      <main className="sd-main">
-
-        {/* Top bar */}
-        <header className="sd-topbar">
-          <div>
-            <p className="sd-topbar-breadcrumb">Student Portal</p>
-            <h1 className="sd-topbar-title">My Dashboard</h1>
+        <div className="stat-card">
+          <div className="stat-icon">⏳</div>
+          <div className="stat-content">
+            <h3>{pendingBookings.length}</h3>
+            <p>Pending Approval</p>
           </div>
-          <div className="sd-topbar-right">
-            <div className="sd-notif">
-              <span className="sd-notif-dot" />
-              🔔
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">✅</div>
+          <div className="stat-content">
+            <h3>{completedBookings.length}</h3>
+            <p>Completed</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">🎯</div>
+          <div className="stat-content">
+            <h3>{studentBookings.length}</h3>
+            <p>Total Bookings</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="dashboard-tabs">
+        <button
+          className={`tab-btn ${activeTab === "overview" ? "active" : ""}`}
+          onClick={() => setActiveTab("overview")}
+        >
+          📊 Overview
+        </button>
+        <button
+          className={`tab-btn ${activeTab === "bookings" ? "active" : ""}`}
+          onClick={() => setActiveTab("bookings")}
+        >
+          📅 My Bookings
+        </button>
+        <button
+          className={`tab-btn ${activeTab === "equipment" ? "active" : ""}`}
+          onClick={() => setActiveTab("equipment")}
+        >
+          🔧 Available Equipment
+        </button>
+      </div>
+
+      {/* Overview Tab */}
+      {activeTab === "overview" && (
+        <div className="tab-content">
+          <div className="overview-grid">
+            {/* Upcoming Bookings */}
+            <div className="card">
+              <h3>📅 Upcoming Bookings</h3>
+              {confirmedBookings.length > 0 ? (
+                <div className="booking-list">
+                  {confirmedBookings.map(booking => (
+                    <div key={booking.id} className="booking-item">
+                      <div className="booking-time">
+                        <strong>{booking.bookingDate}</strong>
+                        <p>{booking.startTime} - {booking.endTime}</p>
+                      </div>
+                      <div className="booking-details">
+                        <p className="equipment-name">{booking.equipmentName}</p>
+                        <p className="purpose">Purpose: {booking.purpose}</p>
+                      </div>
+                      <span className="badge badge-success">Confirmed</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state">No upcoming bookings. <a href="/student/book">Book equipment</a></p>
+              )}
             </div>
-            <Link to="/student/book" className="sd-btn-primary">
-              + New Booking
-            </Link>
-          </div>
-        </header>
 
-        {/* KPI Cards */}
-        <section className="sd-kpi-grid">
-          <div className="sd-kpi sd-kpi--blue">
-            <div className="sd-kpi-top">
-              <span className="sd-kpi-label">Total Bookings</span>
-              <span className="sd-kpi-emoji">📅</span>
+            {/* Pending Approvals */}
+            <div className="card">
+              <h3>⏳ Pending Approvals</h3>
+              {pendingBookings.length > 0 ? (
+                <div className="booking-list">
+                  {pendingBookings.map(booking => (
+                    <div key={booking.id} className="booking-item pending">
+                      <div className="booking-time">
+                        <strong>{booking.bookingDate}</strong>
+                        <p>{booking.startTime} - {booking.endTime}</p>
+                      </div>
+                      <div className="booking-details">
+                        <p className="equipment-name">{booking.equipmentName}</p>
+                        <p className="purpose">Awaiting approval...</p>
+                      </div>
+                      <span className="badge badge-warning">Pending</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="empty-state">All bookings approved!</p>
+              )}
             </div>
-            <div className="sd-kpi-value">24</div>
-            <div className="sd-kpi-sub sd-kpi-sub--up">↑ 3 this month</div>
-          </div>
 
-          <div className="sd-kpi sd-kpi--green">
-            <div className="sd-kpi-top">
-              <span className="sd-kpi-label">Active Bookings</span>
-              <span className="sd-kpi-emoji">⚡</span>
-            </div>
-            <div className="sd-kpi-value">2</div>
-            <div className="sd-kpi-sub sd-kpi-sub--up">In progress now</div>
-          </div>
-
-          <div className="sd-kpi sd-kpi--cyan">
-            <div className="sd-kpi-top">
-              <span className="sd-kpi-label">Usage Hours</span>
-              <span className="sd-kpi-emoji">🕐</span>
-            </div>
-            <div className="sd-kpi-value">86h</div>
-            <div className="sd-kpi-sub sd-kpi-sub--up">↑ 12h this week</div>
-          </div>
-
-          <div className="sd-kpi sd-kpi--amber">
-            <div className="sd-kpi-top">
-              <span className="sd-kpi-label">Appraisal Score</span>
-              <span className="sd-kpi-emoji">🏅</span>
-            </div>
-            <div className="sd-kpi-value">92</div>
-            <div className="sd-kpi-sub sd-kpi-sub--gold">Excellent</div>
-          </div>
-        </section>
-
-        {/* Quick Access + Hero Banner */}
-        <section className="sd-mid-grid">
-
-          {/* Quick Links */}
-          <div className="sd-quick-card">
-            <h2 className="sd-section-title">Quick Access</h2>
-            <div className="sd-quick-grid">
-              <Link to="/student/equipment" className="sd-quick-item">
-                <img
-                  src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&q=80"
-                  alt="Lab equipment"
-                  className="sd-quick-img"
-                />
-                <span>Equipment</span>
-              </Link>
-              <Link to="/student/book" className="sd-quick-item">
-                <img
-                  src="https://images.unsplash.com/photo-1586769852044-692d6e3703f0?w=200&q=80"
-                  alt="Calendar booking"
-                  className="sd-quick-img"
-                />
-                <span>Book Now</span>
-              </Link>
-              <Link to="/student/usage" className="sd-quick-item">
-                <img
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=200&q=80"
-                  alt="Analytics"
-                  className="sd-quick-img"
-                />
-                <span>Usage</span>
-              </Link>
-              <Link to="/student/fault" className="sd-quick-item">
-                <img
-                 src="https://picsum.photos/seed/fault/200/200"
-                  alt="Report fault"
-                  className="sd-quick-img"
-                />
-                <span>Report Fault</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Appraisal Score Panel */}
-          <div className="sd-score-card">
-            <div className="sd-score-overlay">
-              <div className="sd-score-avatar">KS</div>
-              <div className="sd-score-name">Karthikeyan S</div>
-              <div className="sd-score-dept">Information Technology · 2nd Year</div>
-              <div className="sd-score-num">92</div>
-              <div className="sd-score-label">Appraisal Score</div>
-              <div className="sd-score-bar">
-                <div className="sd-score-fill" style={{ width: "92%" }} />
+            {/* Equipment Status */}
+            <div className="card">
+              <h3>🟢 Equipment Availability</h3>
+              <div className="availability-stats">
+                <div className="availability-item">
+                  <span className="dot available"></span>
+                  <span>Available: 4</span>
+                </div>
+                <div className="availability-item">
+                  <span className="dot in-use"></span>
+                  <span>In Use: 1</span>
+                </div>
+                <div className="availability-item">
+                  <span className="dot maintenance"></span>
+                  <span>Maintenance: 1</span>
+                </div>
               </div>
-              <Link to="/student/profile" className="sd-score-btn">View Profile →</Link>
+              <a href="/student/equipment" className="view-link">View all equipment →</a>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="card">
+              <h3>⚡ Quick Actions</h3>
+              <div className="action-buttons">
+                <a href="/student/book" className="btn btn-primary">Book Equipment</a>
+                <a href="/student/usage" className="btn btn-secondary">Usage History</a>
+                <a href="/student/fault" className="btn btn-danger">Report Fault</a>
+                <a href="/student/profile" className="btn btn-info">My Profile</a>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      )}
 
-        {/* Recent Activity Table */}
-        <section className="sd-table-card">
-          <div className="sd-table-header">
-            <h2 className="sd-section-title">Recent Activity</h2>
-            <span className="sd-badge-info">Last 7 days</span>
+      {/* Bookings Tab */}
+      {activeTab === "bookings" && (
+        <div className="tab-content">
+          <div className="bookings-section">
+            <h3>All Your Bookings</h3>
+            {studentBookings.length > 0 ? (
+              <div className="bookings-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Equipment</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Purpose</th>
+                      <th>Status</th>
+                      <th>Approved By</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {studentBookings.map(booking => (
+                      <tr key={booking.id}>
+                        <td>{booking.equipmentName}</td>
+                        <td>{booking.bookingDate}</td>
+                        <td>{booking.startTime} - {booking.endTime}</td>
+                        <td>{booking.purpose}</td>
+                        <td>
+                          <span className={`badge badge-${booking.status === 'completed' ? 'success' : booking.status === 'confirmed' ? 'info' : 'warning'}`}>
+                            {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                          </span>
+                        </td>
+                        <td>{booking.approvedBy || 'Pending'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p className="empty-state">No bookings yet.</p>
+            )}
           </div>
-          <div className="sd-table-wrap">
-            <table className="sd-table">
-              <thead>
-                <tr>
-                  <th>Equipment</th>
-                  <th>Lab</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentBookings.map((b) => (
-                  <tr key={b.id}>
-                    <td className="sd-td-bold">{b.equipment}</td>
-                    <td>{b.lab}</td>
-                    <td>{b.date}</td>
-                    <td>
-                      <span className={`sd-status ${b.statusClass}`}>{b.status}</span>
-                    </td>
-                    <td>
-                      <Link to="/student/usage" className="sd-link">View →</Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+        </div>
+      )}
 
-      </main>
+      {/* Equipment Tab */}
+      {activeTab === "equipment" && (
+        <div className="tab-content">
+          <div className="equipment-grid">
+            {MOCK_EQUIPMENT.map(equipment => (
+              <div key={equipment.id} className="equipment-card">
+                <div className="equipment-header">
+                  <span className="equipment-icon">{equipment.image}</span>
+                  <span className={`status-badge status-${equipment.status}`}>
+                    {equipment.status.charAt(0).toUpperCase() + equipment.status.slice(1)}
+                  </span>
+                </div>
+                <h4>{equipment.name}</h4>
+                <p className="category">{equipment.category}</p>
+                <p className="specs">{equipment.specifications}</p>
+                <p className="location">📍 {equipment.location}</p>
+                <div className="card-footer">
+                  {equipment.status === 'available' ? (
+                    <a href="/student/book" className="btn btn-sm btn-primary">Book Now</a>
+                  ) : (
+                    <button className="btn btn-sm btn-disabled" disabled>
+                      Not Available
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
