@@ -1,7 +1,7 @@
-import { useState } from "react";
-import "./Register.css";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -10,115 +10,222 @@ function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    regNo: "",
-    department: "",
-    role: "STUDENT",
     password: "",
     confirmPassword: "",
+    role: "STUDENT",
+    regNo: "",
+    department: "",
   });
 
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+    }
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+    if (!formData.regNo.trim()) {
+      newErrors.regNo = "Registration number is required";
+    }
+    if (!formData.department) {
+      newErrors.department = "Please select a department";
+    }
+
+    return newErrors;
+  };
 
   const handleChange = (e) => {
-    setError("");
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    // Clear error for this field
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    const newErrors = validateForm();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
     setLoading(true);
+    setSuccessMessage("");
+
     setTimeout(() => {
       const result = register(formData);
       if (result.success) {
-        if (result.role === "STUDENT") navigate("/student/dashboard");
-        else if (result.role === "FACULTY") navigate("/faculty/dashboard");
-        else navigate("/admin/dashboard");
+        setSuccessMessage("Registration successful! Redirecting...");
+        setTimeout(() => {
+          if (result.role === "STUDENT") navigate("/student/dashboard");
+          else if (result.role === "FACULTY") navigate("/faculty/dashboard");
+          else navigate("/admin/dashboard");
+        }, 1500);
       }
-    }, 600);
+      setLoading(false);
+    }, 800);
   };
 
   return (
     <div className="register-container">
       <div className="register-card">
         <div className="register-logo">⚗</div>
-        <h1>LabSync <span>AI</span></h1>
-        <p className="register-subtitle">Create your Smart Lab account</p>
+        <h1>Join LabSync <span>AI</span></h1>
+        <p className="register-subtitle">Create Your Account</p>
 
-        {error && <div className="register-error">{error}</div>}
+        {successMessage && <div className="success-message">{successMessage}</div>}
 
-        <form onSubmit={handleSubmit}>
-          <div className="reg-row">
-            <div className="input-group">
-              <label>Full Name</label>
-              <input type="text" name="name" placeholder="Your full name"
-                value={formData.name} onChange={handleChange} required />
-            </div>
-            <div className="input-group">
-              <label>Register Number</label>
-              <input type="text" name="regNo" placeholder="e.g. 717824226"
-                value={formData.regNo} onChange={handleChange} required />
-            </div>
+        <form onSubmit={handleSubmit} className="register-form">
+          {/* Full Name */}
+          <div className="form-group">
+            <label htmlFor="name">Full Name</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              placeholder="Enter your full name"
+              value={formData.name}
+              onChange={handleChange}
+              className={errors.name ? "error" : ""}
+            />
+            {errors.name && <span className="error-text">{errors.name}</span>}
           </div>
 
-          <div className="input-group">
-            <label>Email Address</label>
-            <input type="email" name="email" placeholder="your@email.com"
-              value={formData.email} onChange={handleChange} required />
+          {/* Email */}
+          <div className="form-group">
+            <label htmlFor="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              className={errors.email ? "error" : ""}
+            />
+            {errors.email && <span className="error-text">{errors.email}</span>}
           </div>
 
-          <div className="reg-row">
-            <div className="input-group">
-              <label>Department</label>
-              <select name="department" value={formData.department} onChange={handleChange} required>
-                <option value="">Select Department</option>
-                <option>Information Technology</option>
-                <option>Computer Science</option>
-                <option>Electronics & Communication</option>
-                <option>Electrical Engineering</option>
-                <option>Mechanical Engineering</option>
-                <option>Civil Engineering</option>
-              </select>
-            </div>
-            <div className="input-group">
-              <label>Role</label>
-              <select name="role" value={formData.role} onChange={handleChange}>
-                <option value="STUDENT">Student</option>
-                <option value="FACULTY">Faculty</option>
-              </select>
-            </div>
+          {/* Role Selection */}
+          <div className="form-group">
+            <label htmlFor="role">Account Type</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="STUDENT">Student</option>
+              <option value="FACULTY">Faculty</option>
+              <option value="ADMIN">Administrator</option>
+            </select>
           </div>
 
-          <div className="reg-row">
-            <div className="input-group">
-              <label>Password</label>
-              <input type="password" name="password" placeholder="Min 6 characters"
-                value={formData.password} onChange={handleChange} required />
-            </div>
-            <div className="input-group">
-              <label>Confirm Password</label>
-              <input type="password" name="confirmPassword" placeholder="Re-enter password"
-                value={formData.confirmPassword} onChange={handleChange} required />
-            </div>
+          {/* Registration Number */}
+          <div className="form-group">
+            <label htmlFor="regNo">
+              {formData.role === "STUDENT" ? "Roll Number" : "ID Number"}
+            </label>
+            <input
+              id="regNo"
+              type="text"
+              name="regNo"
+              placeholder={formData.role === "STUDENT" ? "Enter your roll number" : "Enter your ID number"}
+              value={formData.regNo}
+              onChange={handleChange}
+              className={errors.regNo ? "error" : ""}
+            />
+            {errors.regNo && <span className="error-text">{errors.regNo}</span>}
           </div>
 
+          {/* Department */}
+          <div className="form-group">
+            <label htmlFor="department">Department</label>
+            <select
+              id="department"
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              className={errors.department ? "error" : ""}
+            >
+              <option value="">Select your department</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Electrical">Electrical</option>
+              <option value="Mechanical">Mechanical</option>
+              <option value="Civil">Civil</option>
+              <option value="Computer Science">Computer Science</option>
+            </select>
+            {errors.department && <span className="error-text">{errors.department}</span>}
+          </div>
+
+          {/* Password */}
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter a strong password"
+              value={formData.password}
+              onChange={handleChange}
+              className={errors.password ? "error" : ""}
+            />
+            {errors.password && <span className="error-text">{errors.password}</span>}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              name="confirmPassword"
+              placeholder="Re-enter your password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={errors.confirmPassword ? "error" : ""}
+            />
+            {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
+          </div>
+
+          {/* Submit Button */}
           <button type="submit" className="register-btn" disabled={loading}>
             {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
-        <p className="register-login-link">
-          Already have an account? <Link to="/login">Sign in</Link>
+        {/* Login Link */}
+        <p className="login-link">
+          Already have an account? <Link to="/login">Sign in here</Link>
         </p>
+
+        {/* Terms */}
+        <div className="terms">
+          <p>
+            By registering, you agree to our <a href="#">Terms of Service</a> and{" "}
+            <a href="#">Privacy Policy</a>
+          </p>
+        </div>
       </div>
     </div>
   );
