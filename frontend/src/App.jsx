@@ -1,11 +1,14 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 // Auth Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Unauthorized from "./pages/Unauthorized";
 
 // Student Pages
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -21,47 +24,115 @@ import FacultyDashboard from "./pages/faculty/FacultyDashboard";
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
 
-// 404 Page
 function NotFound() {
   return (
     <div className="error-page">
       <h1>404</h1>
-      <p>Page not found</p>
+      <p>Page Not Found</p>
     </div>
   );
 }
 
 function App() {
   return (
-    
-      <AuthProvider>
-        <Routes>
-          {/* Auth Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+    <AuthProvider>
+      <Routes>
+        {/* Public Routes */}
 
-          {/* Protected Routes with Layout */}
-          <Route element={<Layout />}>
-            {/* Student Routes */}
-            <Route path="/student/dashboard" element={<StudentDashboard />} />
-            <Route path="/student/equipment" element={<EquipmentList />} />
-            <Route path="/student/book" element={<BookEquipment />} />
-            <Route path="/student/usage" element={<UsageHistory />} />
-            <Route path="/student/fault" element={<FaultReport />} />
-            <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
 
-            {/* Faculty Routes */}
-            <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
+        <Route path="/register" element={<Register />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          </Route>
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* Default Routes */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AuthProvider>
+        {/* Protected Routes */}
+
+        <Route element={<Layout />}>
+
+          {/* Student */}
+
+          <Route
+            path="/student/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["student"]}>
+                <StudentDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/equipment"
+            element={
+              <ProtectedRoute allowedRoles={["student"]}>
+                <EquipmentList />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/book"
+            element={
+              <ProtectedRoute allowedRoles={["student"]}>
+                <BookEquipment />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/usage"
+            element={
+              <ProtectedRoute allowedRoles={["student"]}>
+                <UsageHistory />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/fault"
+            element={
+              <ProtectedRoute allowedRoles={["student"]}>
+                <FaultReport />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/student/profile"
+            element={
+              <ProtectedRoute allowedRoles={["student"]}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Faculty */}
+
+          <Route
+            path="/faculty/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["faculty"]}>
+                <FacultyDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin */}
+
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

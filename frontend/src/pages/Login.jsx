@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Login.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -81,6 +81,8 @@ function Login() {
         <div className="login-demo">
           <p>Demo credentials:</p>
           <code>student@lab.com / student123</code>
+          <code>faculty@lab.com / faculty123</code>
+          <code>admin@lab.com / admin123</code>
         </div>
       </div>
     </div>
