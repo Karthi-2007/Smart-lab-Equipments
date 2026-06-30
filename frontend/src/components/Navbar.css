@@ -351,3 +351,21 @@
     min-width: 200px;
   }
 }
+.logout-nav-btn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.logout-nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.logout-nav-btn:focus {
+  outline: none;
+}

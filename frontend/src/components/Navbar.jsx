@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
+import { navigation } from "../data/navigation";
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -9,52 +10,49 @@ function Navbar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const notificationCount = user?.notifications?.length || 0;
+
+  const profileRef = useRef(null);
+
+  const initials=user?.name
+  ?.split(" ")
+  .map(n=>n[0])
+  .join("")
+  .toUpperCase();
+
+useEffect(()=>{
+
+function handleClick(e){
+
+if(profileRef.current &&
+!profileRef.current.contains(e.target)){
+
+setIsProfileOpen(false);
+
+}
+
+}
+
+document.addEventListener("mousedown",handleClick);
+
+return ()=>document.removeEventListener("mousedown",handleClick);
+
+},[]);
 
   const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  if (!window.confirm("Logout from LabSync AI?")) return;
+
+  setIsProfileOpen(false);
+  setIsMenuOpen(false);
+
+  logout();
+  navigate("/login", { replace: true });
+};
 
   const isActive = (path) => location.pathname.startsWith(path);
 
-  // Student Navigation Items
-  const studentMenuItems = [
-    { label: "📊 Dashboard", path: "/student/dashboard" },
-    { label: "🔧 Equipment", path: "/student/equipment" },
-    { label: "📅 Book Equipment", path: "/student/book" },
-    { label: "📈 Usage History", path: "/student/usage" },
-    { label: "⚠️ Report Fault", path: "/student/fault" },
-  ];
-
-  // Faculty Navigation Items
-  const facultyMenuItems = [
-    { label: "📊 Dashboard", path: "/faculty/dashboard" },
-    { label: "✅ Approvals", path: "/faculty/approvals" },
-    { label: "🔧 Equipment", path: "/faculty/equipment" },
-    { label: "⚠️ Faults", path: "/faculty/faults" },
-  ];
-
-  // Admin Navigation Items
-  const adminMenuItems = [
-    { label: "📊 Dashboard", path: "/admin/dashboard" },
-    { label: "🔧 Equipment", path: "/admin/equipment" },
-    { label: "👥 Users", path: "/admin/users" },
-    { label: "📈 Analytics", path: "/admin/analytics" },
-    { label: "⚙️ Settings", path: "/admin/settings" },
-  ];
-
-  const getMenuItems = () => {
-    switch (user?.role) {
-      case "STUDENT":
-        return studentMenuItems;
-      case "FACULTY":
-        return facultyMenuItems;
-      case "ADMIN":
-        return adminMenuItems;
-      default:
-        return [];
-    }
-  };
+   const menuItems = navigation[user?.role] || [];
+   
 
   return (
     <nav className="navbar">
@@ -68,36 +66,55 @@ function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="nav-menu desktop">
-          {getMenuItems().map((item) => (
-            <li key={item.path}>
-              <Link
-                to={item.path}
-                className={`nav-link ${isActive(item.path) ? "active" : ""}`}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+<ul className="nav-menu desktop">
+  {menuItems.map((item) => (
+    <li key={item.path}>
+      <Link
+        to={item.path}
+        className={`nav-link ${isActive(item.path) ? "active" : ""}`}
+      >
+        {item.label}
+      </Link>
+    </li>
+  ))}
+
+  {/* Logout Menu */}
+  <li>
+    <button
+      className="nav-link logout-nav-btn"
+      onClick={handleLogout}
+    >
+      🚪 Logout
+    </button>
+  </li>
+</ul>
 
         {/* Right Section */}
         <div className="navbar-right">
           {/* Notifications */}
           <div className="notification-bell">
             <span className="bell-icon">🔔</span>
-            <span className="notification-badge">3</span>
+            {notificationCount > 0 && (
+            <span className="notification-badge">
+            {notificationCount}
+            
+            </span>
+    )}
           </div>
 
           {/* Profile Dropdown */}
-          <div className="profile-dropdown">
-            <button
+          <div className="profile-dropdown" ref={profileRef}>
+            <button aria-label="Open Profile Menu"   
+            aria-expanded={isProfileOpen}
               className="profile-btn"
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             >
-              <span className="avatar">👤</span>
+              <div className="avatar">
+
+              {initials}
+
+              </div>
               <span className="profile-name">{user?.name}</span>
-              <span className={`chevron ${isProfileOpen ? "open" : ""}`}>▼</span>
             </button>
 
             {isProfileOpen && (
@@ -107,7 +124,7 @@ function Navbar() {
                   <p className="user-role">{user?.role}</p>
                 </div>
                 <div className="dropdown-divider"></div>
-                <Link to="/profile" className="dropdown-item">
+                <Link to={`/${user.role.toLowerCase()}/profile`} className="dropdown-item">
                   👤 My Profile
                 </Link>
                 <Link to="/settings" className="dropdown-item">
@@ -136,41 +153,33 @@ function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <ul className="nav-menu mobile">
-          {getMenuItems().map((item) => (
-            <li key={item.path}>
-              <Link
-                to={item.path}
-                className={`nav-link ${isActive(item.path) ? "active" : ""}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-          <div className="mobile-divider"></div>
-          <li>
-            <Link to="/profile" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-              👤 My Profile
-            </Link>
-          </li>
-          <li>
-            <Link to="/settings" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-              ⚙️ Settings
-            </Link>
-          </li>
-          <li>
-            <button
-              className="nav-link logout-btn"
-              onClick={() => {
-                handleLogout();
-                setIsMenuOpen(false);
-              }}
-            >
-              🚪 Logout
-            </button>
-          </li>
-        </ul>
+  <ul className="nav-menu mobile">
+  {menuItems.map((item) => (
+    <li key={item.path}>
+      <Link
+        to={item.path}
+        className={`nav-link ${isActive(item.path) ? "active" : ""}`}
+        onClick={() => setIsMenuOpen(false)}
+      >
+        {item.label}
+      </Link>
+    </li>
+  ))}
+
+  <div className="mobile-divider"></div>
+
+  <li>
+    <button
+      className="nav-link logout-btn"
+      onClick={() => {
+        handleLogout();
+        setIsMenuOpen(false);
+      }}
+    >
+      🚪 Logout
+    </button>
+  </li>
+</ul>
       )}
     </nav>
   );

@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
 
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -35,7 +34,6 @@ function NotFound() {
 
 function App() {
   return (
-    <AuthProvider>
       <Routes>
         {/* Public Routes */}
 
@@ -54,7 +52,7 @@ function App() {
           <Route
             path="/student/dashboard"
             element={
-              <ProtectedRoute allowedRoles={["student"]}>
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <StudentDashboard />
               </ProtectedRoute>
             }
@@ -63,7 +61,7 @@ function App() {
           <Route
             path="/student/equipment"
             element={
-              <ProtectedRoute allowedRoles={["student"]}>
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <EquipmentList />
               </ProtectedRoute>
             }
@@ -72,7 +70,7 @@ function App() {
           <Route
             path="/student/book"
             element={
-              <ProtectedRoute allowedRoles={["student"]}>
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <BookEquipment />
               </ProtectedRoute>
             }
@@ -81,7 +79,7 @@ function App() {
           <Route
             path="/student/usage"
             element={
-              <ProtectedRoute allowedRoles={["student"]}>
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <UsageHistory />
               </ProtectedRoute>
             }
@@ -90,7 +88,7 @@ function App() {
           <Route
             path="/student/fault"
             element={
-              <ProtectedRoute allowedRoles={["student"]}>
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <FaultReport />
               </ProtectedRoute>
             }
@@ -99,7 +97,7 @@ function App() {
           <Route
             path="/student/profile"
             element={
-              <ProtectedRoute allowedRoles={["student"]}>
+              <ProtectedRoute allowedRoles={["STUDENT"]}>
                 <Profile />
               </ProtectedRoute>
             }
@@ -110,7 +108,7 @@ function App() {
           <Route
             path="/faculty/dashboard"
             element={
-              <ProtectedRoute allowedRoles={["faculty"]}>
+              <ProtectedRoute allowedRoles={["FACULTY"]}>
                 <FacultyDashboard />
               </ProtectedRoute>
             }
@@ -121,7 +119,7 @@ function App() {
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute allowedRoles={["admin"]}>
+              <ProtectedRoute allowedRoles={["ADMIN"]}>
                 <AdminDashboard />
               </ProtectedRoute>
             }
@@ -132,7 +130,6 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </AuthProvider>
   );
 }
 

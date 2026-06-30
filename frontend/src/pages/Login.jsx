@@ -10,6 +10,8 @@ function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleChange = (e) => {
     setError("");
@@ -19,20 +21,53 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+  
+
+
+    const email = user.email.trim();
+const password = user.password.trim();
+
+if (!email || !password) {
+  setError("Email and Password are required.");
+  setLoading(false);
+  return;
+}
+
+if (!/\S+@\S+\.\S+/.test(email)) {
+  setError("Please enter a valid email address.");
+  setLoading(false);
+  return;
+}
+
+if (password.length < 6) {
+  setError("Password must be at least 6 characters.");
+  setLoading(false);
+  return;
+}
 
     // Simulate slight delay for realism
-    setTimeout(() => {
-      const result = login(user.email, user.password);
-      if (result.success) {
-        if (result.role === "STUDENT") navigate("/student/dashboard");
-        else if (result.role === "FACULTY") navigate("/faculty/dashboard");
-        else if (result.role === "ADMIN")   navigate("/admin/dashboard");
-      } else {
-        setError(result.message);
+    try{
+      const result = login(user.email.trim(),user.password.trim());
+     if (result.success) {
+  if (result.role === "STUDENT") {
+    navigate("/student/dashboard");
+  } else if (result.role === "FACULTY") {
+    navigate("/faculty/dashboard");
+  } else if (result.role === "ADMIN") {
+    navigate("/admin/dashboard");
+  }
+} else {
+  setError(result.message);
+}
+    }
+    catch(error){
+      setError(error.message);
+    }
+    finally{
         setLoading(false);
       }
-    }, 600);
-  };
+    };
+
 
   return (
     <div className="login-container">
@@ -53,24 +88,37 @@ function Login() {
               value={user.email}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           </div>
 
           <div className="input-group">
             <label>Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Enter your password"
               value={user.password}
               onChange={handleChange}
               required
+              disabled={loading}
             />
+            <button
+            type="button"
+            className="password-toggle"
+             onClick={() => setShowPassword(!showPassword)}
+            >
+           {showPassword ? "🙈" : "👁️"}
+           </button>
           </div>
+          <Link to="/forgot-password">
+          Forgot Password?
+          </Link> 
 
           <button type="submit" className="login-btn" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
+          
         </form>
 
         <p className="login-register-link">
@@ -80,7 +128,19 @@ function Login() {
         {/* Demo credentials hint */}
         <div className="login-demo">
           <p>Demo credentials:</p>
-          <code>student@lab.com / student123</code>
+          <button
+type="button"
+onClick={()=>
+setUser({
+email:"student@lab.com",
+password:"student123"
+})
+}
+>
+
+Student Demo
+
+</button>
           <code>faculty@lab.com / faculty123</code>
           <code>admin@lab.com / admin123</code>
         </div>

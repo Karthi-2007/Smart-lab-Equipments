@@ -1,3 +1,7 @@
+import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
+import React from "react";
+
 function ProtectedRoute({ children, allowedRoles }) {
   const { isAuthenticated, user } = useAuth();
 
@@ -11,3 +15,5 @@ function ProtectedRoute({ children, allowedRoles }) {
 
   return children;
 }
+
+export default ProtectedRoute;
