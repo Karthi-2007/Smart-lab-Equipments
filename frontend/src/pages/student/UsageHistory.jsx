@@ -1,128 +1,181 @@
-import { useState } from "react";
-import StudentSidebar from "../src/components/StudentSidebar";
-import "../Dashboard.css";
+import React, { useState } from "react";
 import "./UsageHistory.css";
-
-const USAGE_DATA = [
-  { id: 1, equipment: "Digital Oscilloscope", lab: "Electronics Lab",      hours: 4,  date: "Jun 12, 2026", status: "Completed", statusClass: "uh-done" },
-  { id: 2, equipment: "Arduino Uno Kit",       lab: "Embedded Systems Lab", hours: 6,  date: "Jun 15, 2026", status: "Completed", statusClass: "uh-done" },
-  { id: 3, equipment: "PLC Trainer Kit",       lab: "Automation Lab",       hours: 3,  date: "Jun 18, 2026", status: "Completed", statusClass: "uh-done" },
-  { id: 4, equipment: "Function Generator",    lab: "Electronics Lab",      hours: 2,  date: "Jun 20, 2026", status: "Completed", statusClass: "uh-done" },
-  { id: 5, equipment: "CNC Machine Simulator", lab: "Mechanical Lab",       hours: 5,  date: "Jun 24, 2026", status: "Active",    statusClass: "uh-active" },
-  { id: 6, equipment: "Spectrum Analyser",     lab: "RF Lab",               hours: 0,  date: "Jun 25, 2026", status: "Upcoming", statusClass: "uh-upcoming" },
-];
+import { MOCK_BOOKINGS } from "../../data/mockData";
+import { useAuth } from "../../context/AuthContext";
 
 function UsageHistory() {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("All");
+  const { user } = useAuth();
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterMonth, setFilterMonth] = useState("all");
 
-  const filtered = USAGE_DATA.filter((item) => {
-    const matchSearch = item.equipment.toLowerCase().includes(search.toLowerCase());
-    const matchFilter = filter === "All" || item.status === filter;
-    return matchSearch && matchFilter;
+  // Filter bookings for current student
+  const studentBookings = MOCK_BOOKINGS.filter(b => b.studentName === user?.name)
+    .sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
+
+  const statuses = ["all", "pending", "confirmed", "completed"];
+  const months = ["all", "June", "May", "April", "March"];
+
+  // Apply filters
+  const filteredBookings = studentBookings.filter(booking => {
+    const matchesStatus = filterStatus === "all" || booking.status === filterStatus;
+    const bookingMonth = new Date(booking.bookingDate).toLocaleString('default', { month: 'long' });
+    const matchesMonth = filterMonth === "all" || bookingMonth === filterMonth;
+    return matchesStatus && matchesMonth;
   });
 
-  const totalHours   = USAGE_DATA.reduce((s, i) => s + i.hours, 0);
-  const completed    = USAGE_DATA.filter((i) => i.status === "Completed").length;
-  const activeCount  = USAGE_DATA.filter((i) => i.status === "Active").length;
+  const getStatusStats = () => {
+    return {
+      total: studentBookings.length,
+      completed: studentBookings.filter(b => b.status === "completed").length,
+      confirmed: studentBookings.filter(b => b.status === "confirmed").length,
+      pending: studentBookings.filter(b => b.status === "pending").length,
+    };
+  };
+
+  const stats = getStatusStats();
 
   return (
-    <div className="sd-root">
-      <StudentSidebar />
+    <div className="usage-history-page">
+      <div className="page-header">
+        <h1>📊 Equipment Usage History</h1>
+        <p>View all your equipment bookings and usage records</p>
+      </div>
 
-      <main className="sd-main">
-        {/* Topbar */}
-        <header className="sd-topbar">
-          <div>
-            <p className="sd-topbar-breadcrumb">Student Portal</p>
-            <h1 className="sd-topbar-title">Usage History</h1>
+      {/* Statistics */}
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon">📈</div>
+          <div className="stat-content">
+            <h3>{stats.total}</h3>
+            <p>Total Bookings</p>
           </div>
-          <div className="sd-topbar-right">
-            <span className="uh-total-pill">📊 {totalHours} Total Hours</span>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">✅</div>
+          <div className="stat-content">
+            <h3>{stats.completed}</h3>
+            <p>Completed</p>
           </div>
-        </header>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">✓</div>
+          <div className="stat-content">
+            <h3>{stats.confirmed}</h3>
+            <p>Confirmed</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">⏳</div>
+          <div className="stat-content">
+            <h3>{stats.pending}</h3>
+            <p>Pending</p>
+          </div>
+        </div>
+      </div>
 
-        {/* KPI Row */}
-        <section className="uh-kpi-row">
-          <div className="uh-kpi uh-kpi--blue">
-            <div className="uh-kpi-val">{USAGE_DATA.length}</div>
-            <div className="uh-kpi-label">Total Sessions</div>
-          </div>
-          <div className="uh-kpi uh-kpi--green">
-            <div className="uh-kpi-val">{totalHours}h</div>
-            <div className="uh-kpi-label">Usage Hours</div>
-          </div>
-          <div className="uh-kpi uh-kpi--cyan">
-            <div className="uh-kpi-val">{completed}</div>
-            <div className="uh-kpi-label">Completed</div>
-          </div>
-          <div className="uh-kpi uh-kpi--amber">
-            <div className="uh-kpi-val">89</div>
-            <div className="uh-kpi-label">Appraisal Score</div>
-          </div>
-        </section>
+      {/* Filters */}
+      <div className="filters-section">
+        <div className="filter-group">
+          <label htmlFor="status">Filter by Status:</label>
+          <select
+            id="status"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            {statuses.map(status => (
+              <option key={status} value={status}>
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="filter-group">
+          <label htmlFor="month">Filter by Month:</label>
+          <select
+            id="month"
+            value={filterMonth}
+            onChange={(e) => setFilterMonth(e.target.value)}
+          >
+            {months.map(month => (
+              <option key={month} value={month}>
+                {month.charAt(0).toUpperCase() + month.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
-        {/* Table Card */}
-        <section className="uh-table-card">
-          {/* Filters */}
-          <div className="uh-filters">
-            <input
-              className="uh-search"
-              type="text"
-              placeholder="🔍  Search equipment..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <div className="uh-filter-tabs">
-              {["All", "Completed", "Active", "Upcoming"].map((f) => (
-                <button
-                  key={f}
-                  className={`uh-tab ${filter === f ? "uh-tab--active" : ""}`}
-                  onClick={() => setFilter(f)}
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
+      {/* History Table */}
+      {filteredBookings.length > 0 ? (
+        <div className="history-section">
+          <div className="results-info">
+            <p>Showing {filteredBookings.length} of {studentBookings.length} bookings</p>
           </div>
 
-          {/* Table */}
-          <div className="uh-table-wrap">
-            <table className="uh-table">
+          <div className="history-table">
+            <table>
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Equipment</th>
-                  <th>Lab</th>
-                  <th>Usage Hours</th>
                   <th>Date</th>
+                  <th>Time</th>
+                  <th>Duration</th>
+                  <th>Purpose</th>
                   <th>Status</th>
+                  <th>Approved By</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.length > 0 ? (
-                  filtered.map((item, idx) => (
-                    <tr key={item.id}>
-                      <td className="uh-td-muted">{idx + 1}</td>
-                      <td className="uh-td-bold">{item.equipment}</td>
-                      <td className="uh-td-muted">{item.lab}</td>
-                      <td>{item.hours > 0 ? `${item.hours} hrs` : "—"}</td>
-                      <td className="uh-td-muted">{item.date}</td>
+                {filteredBookings.map(booking => {
+                  const start = new Date(`2026-01-01 ${booking.startTime}`);
+                  const end = new Date(`2026-01-01 ${booking.endTime}`);
+                  const duration = Math.round((end - start) / (1000 * 60));
+                  
+                  return (
+                    <tr key={booking.id} className={`status-${booking.status}`}>
+                      <td className="equipment-name">📦 {booking.equipmentName}</td>
+                      <td>{booking.bookingDate}</td>
+                      <td>{booking.startTime} - {booking.endTime}</td>
+                      <td>{duration} min</td>
+                      <td className="purpose">{booking.purpose}</td>
                       <td>
-                        <span className={`uh-status ${item.statusClass}`}>{item.status}</span>
+                        <span className={`badge status-${booking.status}`}>
+                          {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                        </span>
                       </td>
+                      <td>{booking.approvedBy || "Pending"}</td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={6} className="uh-empty">No records found.</td>
-                  </tr>
-                )}
+                  );
+                })}
               </tbody>
             </table>
           </div>
-        </section>
-      </main>
+        </div>
+      ) : (
+        <div className="no-results">
+          <p>📭 No bookings found with the selected filters.</p>
+          <p>Start booking equipment to see your usage history here.</p>
+        </div>
+      )}
+
+      {/* Usage Tips */}
+      <div className="tips-section">
+        <h2>💡 Usage Tips</h2>
+        <div className="tips-grid">
+          <div className="tip-card">
+            <h4>🎯 Plan Ahead</h4>
+            <p>Book equipment in advance to ensure availability for your experiments.</p>
+          </div>
+          <div className="tip-card">
+            <h4>⏰ Optimize Time</h4>
+            <p>Use available time slots efficiently. Unused bookings may be deallocated.</p>
+          </div>
+          <div className="tip-card">
+            <h4>🔍 Track Usage</h4>
+            <p>Monitor your usage patterns to improve resource planning.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
