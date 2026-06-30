@@ -2,16 +2,32 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./StudentDashboard.css";
 import { MOCK_BOOKINGS, MOCK_EQUIPMENT, STATS } from "../../data/mockData";
+import { Link } from "react-router-dom";
 
 function StudentDashboard() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
+  const [search, setSearch] = useState("");
 
   // Filter bookings for current student
   const studentBookings = MOCK_BOOKINGS.filter(b => b.studentName === user?.name);
   const confirmedBookings = studentBookings.filter(b => b.status === "confirmed");
   const pendingBookings = studentBookings.filter(b => b.status === "pending");
   const completedBookings = studentBookings.filter(b => b.status === "completed");
+
+  
+
+  const availableCount = MOCK_EQUIPMENT.filter(
+  item => item.status === "available"
+).length;
+
+const inUseCount = MOCK_EQUIPMENT.filter(
+  item => item.status === "in-use"
+).length;
+
+const maintenanceCount = MOCK_EQUIPMENT.filter(
+  item => item.status === "maintenance"
+).length;
 
   return (
     <div className="student-dashboard">
@@ -105,7 +121,9 @@ function StudentDashboard() {
                   ))}
                 </div>
               ) : (
-                <p className="empty-state">No upcoming bookings. <a href="/student/book">Book equipment</a></p>
+                <p className="empty-state">No upcoming bookings. <Link to="/student/book" className="btn btn-primary">
+  Book Equipment
+</Link></p>
               )}
             </div>
 
@@ -139,28 +157,28 @@ function StudentDashboard() {
               <div className="availability-stats">
                 <div className="availability-item">
                   <span className="dot available"></span>
-                  <span>Available: 4</span>
+                  <span>Available:{availableCount}</span>
                 </div>
                 <div className="availability-item">
                   <span className="dot in-use"></span>
-                  <span>In Use: 1</span>
+                  <span>In Use:{inUseCount}</span>
                 </div>
                 <div className="availability-item">
                   <span className="dot maintenance"></span>
-                  <span>Maintenance: 1</span>
+                  <span>Maintenance:{maintenanceCount}</span>
                 </div>
               </div>
-              <a href="/student/equipment" className="view-link">View all equipment →</a>
+              <Link href="/student/equipment" className="view-link">View all equipment →</Link>
             </div>
 
             {/* Quick Actions */}
             <div className="card">
               <h3>⚡ Quick Actions</h3>
               <div className="action-buttons">
-                <a href="/student/book" className="btn btn-primary">Book Equipment</a>
-                <a href="/student/usage" className="btn btn-secondary">Usage History</a>
-                <a href="/student/fault" className="btn btn-danger">Report Fault</a>
-                <a href="/student/profile" className="btn btn-info">My Profile</a>
+                <Link href="/student/book" className="btn btn-primary">Book Equipment</Link>
+                <Link href="/student/usage" className="btn btn-secondary">Usage History</Link>
+                <Link href="/student/fault" className="btn btn-danger">Report Fault</Link>
+                <Link href="/student/profile" className="btn btn-info">My Profile</Link>
               </div>
             </div>
           </div>

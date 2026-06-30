@@ -22,7 +22,6 @@ function FacultyDashboard() {
           <p className="review-eyebrow">Faculty Portal</p>
           <h1>Department Lab Overview</h1>
         </div>
-        <Link to="/logout" className="ghost-link">Logout</Link>
       </header>
 
       <section className="card-grid">

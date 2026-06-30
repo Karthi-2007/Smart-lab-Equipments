@@ -1,62 +1,39 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import Navbar from "./Navbar";
 import "./Layout.css";
-import { useAuth } from "../context/AuthContext";
 
 function Layout() {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
-  // Show loading while checking authentication
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
-
-  // Public pages (Login/Register/Home)
+  // Public Pages
   if (!user) {
     return <Outlet />;
   }
 
   return (
     <div className="app-layout">
-      {/* Top Navigation */}
+      {/* Navbar */}
       <Navbar />
 
       {/* Main Content */}
-      <div className="layout-container">
-        <main className="main-content">
-          <Outlet />
-        </main>
-      </div>
+      <main className="main-content">
+        <Outlet />
+      </main>
 
       {/* Footer */}
       <footer className="app-footer">
         <div className="footer-content">
-
           <p>
-            © {new Date().getFullYear()} LabSync AI. All rights reserved.
+            © {new Date().getFullYear()} LabSync AI. All Rights Reserved.
           </p>
 
           <div className="footer-links">
-
-            <Link to="/privacy">
-              Privacy Policy
-            </Link>
-
-            <Link to="/terms">
-              Terms of Service
-            </Link>
-
-            <Link to="/contact">
-              Contact Us
-            </Link>
-
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms of Service</Link>
+            <Link to="/contact">Contact Us</Link>
           </div>
-
         </div>
       </footer>
     </div>

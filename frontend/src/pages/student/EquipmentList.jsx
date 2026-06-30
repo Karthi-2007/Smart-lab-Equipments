@@ -1,123 +1,269 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../student/EquipmentList.css";
-import { MOCK_EQUIPMENT } from "/src/data/mockData";
+import "./EquipmentList.css";
+import { MOCK_EQUIPMENT } from "../../data/mockData";
 
 function EquipmentList() {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedStatus, setSelectedStatus] = useState("all");
 
-  // Get unique categories
-  const categories = ["all", ...new Set(MOCK_EQUIPMENT.map(e => e.category))];
-  const statuses = ["all", "available", "in-use", "maintenance"];
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("all");
+  const [status, setStatus] = useState("all");
 
-  // Filter equipment
-  let filteredEquipment = MOCK_EQUIPMENT.filter(eq => {
-    const matchesSearch = eq.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         eq.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || eq.category === selectedCategory;
-    const matchesStatus = selectedStatus === "all" || eq.status === selectedStatus;
-    return matchesSearch && matchesCategory && matchesStatus;
-  });
+  const categories = [
+    "all",
+    ...new Set(MOCK_EQUIPMENT.map((item) => item.category)),
+  ];
+
+  const filteredEquipment = useMemo(() => {
+    return MOCK_EQUIPMENT.filter((item) => {
+      const searchMatch =
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.description.toLowerCase().includes(search.toLowerCase());
+
+      const categoryMatch =
+        category === "all" || item.category === category;
+
+      const statusMatch =
+        status === "all" || item.status === status;
+
+      return searchMatch && categoryMatch && statusMatch;
+    });
+  }, [search, category, status]);
+
+  const available = MOCK_EQUIPMENT.filter(
+    (e) => e.status === "available"
+  ).length;
+
+  const inUse = MOCK_EQUIPMENT.filter(
+    (e) => e.status === "in-use"
+  ).length;
+
+  const maintenance = MOCK_EQUIPMENT.filter(
+    (e) => e.status === "maintenance"
+  ).length;
 
   return (
-    <div className="equipment-list-page">
-      <div className="page-header">
-        <h1>🔬 Laboratory Equipment</h1>
-        <p>Browse and book available equipment for your experiments</p>
+    <div className="equipment-page">
+
+      {/* Header */}
+
+      <div className="equipment-header">
+        <div>
+          <h1>🔬 Laboratory Equipment</h1>
+          <p>
+            Browse available laboratory equipment and make smart bookings.
+          </p>
+        </div>
+      </div>
+
+      {/* Statistics */}
+
+      <div className="equipment-stats">
+
+        <div className="stat-card">
+          <h2>{MOCK_EQUIPMENT.length}</h2>
+          <span>Total Equipment</span>
+        </div>
+
+        <div className="stat-card available">
+          <h2>{available}</h2>
+          <span>Available</span>
+        </div>
+
+        <div className="stat-card inuse">
+          <h2>{inUse}</h2>
+          <span>In Use</span>
+        </div>
+
+        <div className="stat-card maintenance">
+          <h2>{maintenance}</h2>
+          <span>Maintenance</span>
+        </div>
+
       </div>
 
       {/* Filters */}
-      <div className="filters-section">
-        <div className="filter-group">
-          <input
-            type="text"
-            placeholder="🔍 Search equipment..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-        </div>
 
-        <div className="filter-group">
-          <label>Category:</label>
-          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>
-                {cat.charAt(0).toUpperCase() + cat.slice(1).replace(/([A-Z])/g, ' $1')}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="filter-container">
 
-        <div className="filter-group">
-          <label>Status:</label>
-          <select value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)}>
-            {statuses.map(status => (
-              <option key={status} value={status}>
-                {status.charAt(0).toUpperCase() + status.slice(1).replace(/([A-Z])/g, ' $1')}
-              </option>
-            ))}
-          </select>
-        </div>
+        <input
+          type="text"
+          placeholder="Search equipment..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          {categories.map((cat) => (
+            <option key={cat}>{cat}</option>
+          ))}
+        </select>
+
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+        >
+          <option value="all">All Status</option>
+          <option value="available">Available</option>
+          <option value="in-use">In Use</option>
+          <option value="maintenance">Maintenance</option>
+        </select>
+
       </div>
 
-      {/* Results */}
-      <div className="results-info">
-        <p>Showing {filteredEquipment.length} of {MOCK_EQUIPMENT.length} equipment</p>
+      {/* Result Count */}
+
+      <div className="result-count">
+        Showing <strong>{filteredEquipment.length}</strong> of{" "}
+        <strong>{MOCK_EQUIPMENT.length}</strong> equipment
       </div>
 
       {/* Equipment Grid */}
-      {filteredEquipment.length > 0 ? (
-        <div className="equipment-grid">
-          {filteredEquipment.map(equipment => (
-            <div key={equipment.id} className="equipment-card">
-              <div className="card-header">
-                <span className="equipment-icon">{equipment.image}</span>
-                <span className={`status-badge status-${equipment.status}`}>
-                  {equipment.status.replace('-', ' ').toUpperCase()}
+
+      <div className="equipment-grid">
+
+        {filteredEquipment.map((equipment) => {
+
+          const health =
+            equipment.status === "available"
+              ? 96
+              : equipment.status === "in-use"
+              ? 82
+              : 55;
+
+          const risk =
+            health >= 90
+              ? "Low"
+              : health >= 70
+              ? "Medium"
+              : "High";
+
+          return (
+            <div
+              key={equipment.id}
+              className="equipment-card"
+            >
+
+              <div className="equipment-top">
+
+                <div className="equipment-image">
+                  {equipment.image}
+                </div>
+
+                <span
+                  className={`status ${equipment.status}`}
+                >
+                  {equipment.status.toUpperCase()}
                 </span>
+
               </div>
 
-              <div className="card-body">
-                <h3>{equipment.name}</h3>
-                <p className="category">📦 {equipment.category}</p>
-                <p className="description">{equipment.description}</p>
-                <div className="specs">
-                  <p><strong>Specifications:</strong></p>
-                  <p>{equipment.specifications}</p>
-                </div>
-                <div className="meta-info">
-                  <p>📍 {equipment.location}</p>
-                  <p>🔧 Last serviced: {equipment.lastServiced}</p>
-                  <p>📅 Next maintenance: {equipment.maintenanceDate}</p>
-                  <p>📊 {equipment.bookingsPerWeek} bookings/week</p>
-                </div>
+              <h3>{equipment.name}</h3>
+
+              <p className="equipment-category">
+                {equipment.category}
+              </p>
+
+              <p className="equipment-description">
+                {equipment.description}
+              </p>
+
+              <div className="equipment-details">
+
+                <p>
+                  <strong>Location:</strong>{" "}
+                  {equipment.location}
+                </p>
+
+                <p>
+                  <strong>Specifications:</strong>{" "}
+                  {equipment.specifications}
+                </p>
+
+                <p>
+                  <strong>Last Service:</strong>{" "}
+                  {equipment.lastServiced}
+                </p>
+
+                <p>
+                  <strong>Next Maintenance:</strong>{" "}
+                  {equipment.maintenanceDate}
+                </p>
+
+                <p>
+                  <strong>Weekly Usage:</strong>{" "}
+                  {equipment.bookingsPerWeek}
+                </p>
+
               </div>
 
-              <div className="card-footer">
-                {equipment.status === 'available' ? (
+              {/* AI Prediction */}
+
+              <div className="prediction-box">
+
+                <h4>🤖 AI Prediction</h4>
+
+                <p>
+                  Equipment Health :
+                  <strong> {health}%</strong>
+                </p>
+
+                <p>
+                  Maintenance Risk :
+                  <strong> {risk}</strong>
+                </p>
+
+                <progress
+                  value={health}
+                  max="100"
+                ></progress>
+
+              </div>
+
+              <div className="equipment-footer">
+
+                {equipment.status === "available" ? (
                   <button
-                    className="btn btn-book"
-                    onClick={() => navigate("/student/book", { state: { equipmentId: equipment.id } })}
+                    className="book-btn"
+                    onClick={() =>
+                      navigate("/student/book", {
+                        state: {
+                          equipment,
+                        },
+                      })
+                    }
                   >
-                    📅 Book Now
+                    📅 Book Equipment
                   </button>
                 ) : (
-                  <button className="btn btn-disabled" disabled>
-                    ❌ Not Available
+                  <button
+                    disabled
+                    className="disabled-btn"
+                  >
+                    Not Available
                   </button>
                 )}
+
               </div>
+
             </div>
-          ))}
-        </div>
-      ) : (
-        <div className="no-results">
-          <p>😔 No equipment found matching your filters.</p>
-          <p>Try adjusting your search criteria.</p>
+          );
+        })}
+      </div>
+
+      {filteredEquipment.length === 0 && (
+        <div className="no-data">
+
+          <h2>No Equipment Found</h2>
+
+          <p>
+            Try changing your search or filter.
+          </p>
+
         </div>
       )}
     </div>

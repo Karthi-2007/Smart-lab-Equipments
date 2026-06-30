@@ -19,9 +19,23 @@ import Profile from "./pages/student/Profile";
 
 // Faculty Pages
 import FacultyDashboard from "./pages/faculty/FacultyDashboard";
+import BookingApprovals from "./pages/faculty/BookingApprovals";
+import FaultMonitoring from "./pages/faculty/FaultMonitoring";
+import Analytics from "./pages/faculty/Analytics";
+import FacultyProfile from "./pages/faculty/FacultyProfile";
+import EquipmentMonitoring from "./pages/faculty/EquipmentMonitoring";
+
+
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import UserManagement from "./pages/admin/UserManagement";
+import EquipmentManagement from "./pages/admin/EquipmentManagement";
+import BookingManagement from "./pages/admin/BookingManagement";
+import MaintenanceManagement from "./pages/admin/MaintenanceManagement";
+import AIPredictions from "./pages/admin/AIPredictions";
+import AdminProfile from "./pages/admin/AdminProfile";
+
 
 function NotFound() {
   return (
@@ -106,24 +120,127 @@ function App() {
           {/* Faculty */}
 
           <Route
-            path="/faculty/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={["FACULTY"]}>
-                <FacultyDashboard />
-              </ProtectedRoute>
-            }
-          />
+  path="/faculty/dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["FACULTY"]}>
+      <FacultyDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/faculty/approvals"
+  element={
+    <ProtectedRoute allowedRoles={["FACULTY"]}>
+      <BookingApprovals />
+    </ProtectedRoute>
+  }
+/>
+
+
+<Route
+  path="/faculty/faults"
+  element={
+    <ProtectedRoute allowedRoles={["FACULTY"]}>
+      <FaultMonitoring />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/faculty/analytics"
+  element={
+    <ProtectedRoute allowedRoles={["FACULTY"]}>
+      <Analytics />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/faculty/profile"
+  element={
+    <ProtectedRoute allowedRoles={["FACULTY"]}>
+      <FacultyProfile />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/faculty/equipment"
+  element={
+    <ProtectedRoute allowedRoles={["FACULTY"]}>
+      <EquipmentMonitoring />
+    </ProtectedRoute>
+  }
+/>
+
+
 
           {/* Admin */}
 
           <Route
-            path="/admin/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={["ADMIN"]}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
+  path="/admin/dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <AdminDashboard />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/users"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <UserManagement />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/equipment"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <EquipmentManagement />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/bookings"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <BookingManagement />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/maintenance"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <MaintenanceManagement />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/ai"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <AIPredictions />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/profile"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <AdminProfile />
+    </ProtectedRoute>
+  }
+/>
+
         </Route>
 
         <Route path="/" element={<Navigate to="/login" replace />} />
