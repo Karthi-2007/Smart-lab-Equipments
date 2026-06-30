@@ -6,6 +6,10 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import TermsOfService from "../pages/TermsOfService";
+import Contact from "../pages/Contact";
+import Unauthorized from "../pages/Unauthorized";
 
 import StudentDashboard from "../pages/student/StudentDashboard";
 import EquipmentList from "../pages/student/EquipmentList";
@@ -29,16 +33,14 @@ import AIPredictions from "../pages/admin/AIPredictions";
 import { ROLES } from "../constants/roles";
 import { DASHBOARD_PATHS } from "../constants/routes";
 
-import Unauthorized from "../pages/Unauthorized";
-
 function ProtectedRoute({ children, allowedRoles }) {
   const { isAuthenticated, user } = useAuth();
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 
- if (allowedRoles && !allowedRoles.includes(user?.role)) {
-  return <Navigate to="/unauthorized" replace />;
-}
+  if (allowedRoles && !allowedRoles.includes(user?.role)) {
+    return <Navigate to="/unauthorized" replace />;
+  }
 
   return children;
 }
@@ -81,7 +83,6 @@ function AppRoutes() {
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsOfService />} />
       <Route path="/contact" element={<Contact />} />
-      
 
       <Route path="/student" element={<RoleHome />} />
       <Route
