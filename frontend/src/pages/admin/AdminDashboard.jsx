@@ -1,12 +1,7 @@
 import { Link } from "react-router-dom";
 import "../Dashboard.css";
-
-const summary = [
-  { label: "Total Equipment", value: "150", note: "12 labs covered" },
-  { label: "Active Users", value: "320", note: "Students and faculty" },
-  { label: "Pending Bookings", value: "18", note: "Needs approval" },
-  { label: "Maintenance Due", value: "7", note: "This week" },
-];
+import { useData } from "../../context/DataContext";
+import React from "react";
 
 const modules = [
   { to: "/admin/users", title: "User Management", text: "Manage students, faculty, and admin access." },
@@ -17,6 +12,15 @@ const modules = [
 ];
 
 function AdminDashboard() {
+  const { stats } = useData();
+
+  const summary = [
+    { label: "Total Equipment", value: stats.totalEquipment, note: "Across all labs" },
+    { label: "Active Users", value: stats.activeUsers, note: "Students and faculty" },
+    { label: "Pending Bookings", value: stats.pendingBookings, note: "Needs approval" },
+    { label: "Maintenance Due", value: stats.maintenanceEquipment, note: "This week" },
+  ];
+
   return (
     <main className="dashboard">
       <header className="review-header">

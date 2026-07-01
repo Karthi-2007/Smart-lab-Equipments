@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./EquipmentList.css";
-import { MOCK_EQUIPMENT, STATS } from "../../data/mockData";
-import "./EquipmentList.css";
+import { useData } from "../../context/DataContext";
 
 function EquipmentList() {
   const navigate = useNavigate();
+  const { equipment, stats } = useData();
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -13,36 +13,21 @@ function EquipmentList() {
 
   const categories = [
     "all",
-    ...new Set(MOCK_EQUIPMENT.map((item) => item.category)),
+    ...new Set(equipment.map((item) => item.category)),
   ];
 
   const filteredEquipment = useMemo(() => {
-    return MOCK_EQUIPMENT.filter((item) => {
+    return equipment.filter((item) => {
       const searchMatch =
         item.name.toLowerCase().includes(search.toLowerCase()) ||
         item.description.toLowerCase().includes(search.toLowerCase());
 
-      const categoryMatch =
-        category === "all" || item.category === category;
-
-      const statusMatch =
-        status === "all" || item.status === status;
+      const categoryMatch = category === "all" || item.category === category;
+      const statusMatch = status === "all" || item.status === status;
 
       return searchMatch && categoryMatch && statusMatch;
     });
-  }, [search, category, status]);
-
-  const available = MOCK_EQUIPMENT.filter(
-    (e) => e.status === "available"
-  ).length;
-
-  const inUse = MOCK_EQUIPMENT.filter(
-    (e) => e.status === "in-use"
-  ).length;
-
-  const maintenance = MOCK_EQUIPMENT.filter(
-    (e) => e.status === "maintenance"
-  ).length;
+  }, [search, category, status, equipment]);
 
   return (
     <div className="equipment-page">
@@ -63,22 +48,22 @@ function EquipmentList() {
       <div className="equipment-stats">
 
         <div className="stat-card">
-          <h2>{MOCK_EQUIPMENT.length}</h2>
+          <h2>{stats.totalEquipment}</h2>
           <span>Total Equipment</span>
         </div>
 
        <div className="stat-card available">
-       <h2>{available}</h2>
+       <h2>{stats.availableEquipment}</h2>
        <span>Available</span>
         </div>
 
         <div className="stat-card inuse">
-        <h2>{inUse}</h2>
+        <h2>{stats.bookedEquipment}</h2>
         <span>In Use</span>
         </div>
 
         <div className="stat-card maintenance">
-        <h2>{maintenance}</h2>
+        <h2>{stats.maintenanceEquipment}</h2>
         <span>Maintenance</span>
         </div>
 
@@ -122,7 +107,7 @@ function EquipmentList() {
 
       <div className="result-count">
         Showing <strong>{filteredEquipment.length}</strong> of{" "}
-        <strong>{MOCK_EQUIPMENT.length}</strong> equipment
+        <strong>{equipment.length}</strong> equipment
       </div>
 
       {/* Equipment Grid */}

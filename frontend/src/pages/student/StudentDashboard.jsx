@@ -1,33 +1,23 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./StudentDashboard.css";
-import { MOCK_BOOKINGS, MOCK_EQUIPMENT, STATS } from "../../data/mockData";
 import { Link } from "react-router-dom";
+import { useData } from "../../context/DataContext";
 
 function StudentDashboard() {
   const { user } = useAuth();
+  const { equipment, getBookingsByStudent } = useData();
   const [activeTab, setActiveTab] = useState("overview");
-  const [search, setSearch] = useState("");
 
   // Filter bookings for current student
-  const studentBookings = MOCK_BOOKINGS.filter(b => b.studentName === user?.name);
+  const studentBookings = getBookingsByStudent(user?.id);
   const confirmedBookings = studentBookings.filter(b => b.status === "confirmed");
   const pendingBookings = studentBookings.filter(b => b.status === "pending");
   const completedBookings = studentBookings.filter(b => b.status === "completed");
 
-  
-
-  const availableCount = MOCK_EQUIPMENT.filter(
-  item => item.status === "available"
-).length;
-
-const inUseCount = MOCK_EQUIPMENT.filter(
-  item => item.status === "in-use"
-).length;
-
-const maintenanceCount = MOCK_EQUIPMENT.filter(
-  item => item.status === "maintenance"
-).length;
+  const availableCount = equipment.filter(item => item.status === "available").length;
+  const inUseCount = equipment.filter(item => item.status === "in-use").length;
+  const maintenanceCount = equipment.filter(item => item.status === "maintenance").length;
 
   return (
     <div className="student-dashboard">
@@ -246,7 +236,7 @@ const maintenanceCount = MOCK_EQUIPMENT.filter(
                 <p className="location">📍 {equipment.location}</p>
                 <div className="card-footer">
                   {equipment.status === 'available' ? (
-                    <a href="/student/book" className="btn btn-sm btn-primary">Book Now</a>
+                    <Link to="/student/book" className="btn btn-sm btn-primary">Book Now</Link>
                   ) : (
                     <button className="btn btn-sm btn-disabled" disabled>
                       Not Available

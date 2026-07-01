@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
 import "../Dashboard.css";
-
-const bookings = [
-  { id: "BK-2401", student: "Karthikeyan S", equipment: "Digital Oscilloscope", date: "Jul 01, 2026", status: "Approved" },
-  { id: "BK-2402", student: "Hariharan A", equipment: "Arduino Uno Kit", date: "Jul 01, 2026", status: "Pending" },
-  { id: "BK-2403", student: "Premnath P", equipment: "3D Printer", date: "Jul 02, 2026", status: "Pending" },
-  { id: "BK-2404", student: "Nivetha R", equipment: "Network Analyzer", date: "Jul 02, 2026", status: "Completed" },
-];
+import { useData } from "../../context/DataContext";
+import React from "react";
 
 function BookingManagement() {
+  const { bookings, stats } = useData();
+
   return (
     <main className="dashboard">
       <header className="review-header">
@@ -22,7 +19,7 @@ function BookingManagement() {
       <section className="data-card">
         <div className="data-card-header">
           <h2>All Booking Requests</h2>
-          <span className="status-pill is-warning">2 Pending</span>
+          <span className="status-pill is-warning">{stats.pendingBookings} Pending</span>
         </div>
         <div className="table-scroll">
           <table className="data-table">
@@ -38,10 +35,10 @@ function BookingManagement() {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking.id}>
-                  <td>{booking.id}</td>
-                  <td className="strong-cell">{booking.student}</td>
-                  <td>{booking.equipment}</td>
-                  <td>{booking.date}</td>
+                  <td>BK-{booking.id}</td>
+                  <td className="strong-cell">{booking.studentName}</td>
+                  <td>{booking.equipmentName}</td>
+                  <td>{booking.bookingDate}</td>
                   <td>
                     <span className={`status-pill ${booking.status === "Approved" || booking.status === "Completed" ? "is-success" : "is-warning"}`}>
                       {booking.status}

@@ -1,9 +1,11 @@
 import React from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./AdminProfile.css";
+import { useData } from "../../context/DataContext";
 
 function AdminProfile() {
   const { user } = useAuth();
+  const { stats } = useData();
 
   return (
     <div className="admin-profile-page">
@@ -58,22 +60,22 @@ function AdminProfile() {
 
           <div className="summary-box">
             <div className="summary-item">
-              <h2>320</h2>
+              <h2>{stats.totalUsers}</h2>
               <p>Total Users</p>
             </div>
 
             <div className="summary-item">
-              <h2>150</h2>
+              <h2>{stats.totalEquipment}</h2>
               <p>Equipment</p>
             </div>
 
             <div className="summary-item">
-              <h2>42</h2>
+              <h2>{stats.pendingBookings + stats.approvedBookings}</h2>
               <p>Active Bookings</p>
             </div>
 
             <div className="summary-item">
-              <h2>7</h2>
+              <h2>{stats.maintenanceEquipment}</h2>
               <p>Maintenance Due</p>
             </div>
           </div>

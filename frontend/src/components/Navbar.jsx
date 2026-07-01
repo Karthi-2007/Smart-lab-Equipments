@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
@@ -21,34 +21,28 @@ user?.name
 .join("")
 .toUpperCase() || "";
 
-useEffect(()=>{
+  const handleLogout = useCallback(() => {
+    if (!window.confirm("Logout from LabSync AI?")) return;
+    
+    setIsProfileOpen(false);
+    setIsMenuOpen(false);
+    
+    logout();
+    navigate("/login", { replace: true });
+  }, [logout, navigate]);
 
-function handleClick(e){
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [profileRef]);
 
-if(profileRef.current &&
-!profileRef.current.contains(e.target)){
-
-setIsProfileOpen(false);
-
-}
-
-}
-
-document.addEventListener("mousedown",handleClick);
-
-return ()=>document.removeEventListener("mousedown",handleClick);
-
-},[]);
-
-  const handleLogout = () => {
-  if (!window.confirm("Logout from LabSync AI?")) return;
-
-  setIsProfileOpen(false);
-  setIsMenuOpen(false);
-
-  logout();
-  navigate("/login", { replace: true });
-};
 
   const isActive = (path) => location.pathname.startsWith(path);
 

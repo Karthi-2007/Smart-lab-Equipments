@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BookEquipment.css";
-import { MOCK_EQUIPMENT, MOCK_BOOKINGS } from "../../data/mockData";
 import { useAuth } from "../../context/AuthContext";
+import { useData } from "../../context/DataContext";
 
 function BookEquipment() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { equipment, createBooking } = useData();
   const [selectedEquipment, setSelectedEquipment] = useState("");
   const [bookingData, setBookingData] = useState({
     date: "",
@@ -18,7 +19,7 @@ function BookEquipment() {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const availableEquipment = MOCK_EQUIPMENT.filter(e => e.status === "available");
+  const availableEquipment = equipment.filter(e => e.status === "available");
 
   const validateForm = () => {
     const newErrors = {};
@@ -55,6 +56,13 @@ function BookEquipment() {
     }
 
     setLoading(true);
+    createBooking({
+      studentId: user.id,
+      studentName: user.name,
+      equipmentId: parseInt(selectedEquipment),
+      equipmentName: equipment.find(e => e.id === parseInt(selectedEquipment))?.name,
+      ...bookingData,
+    });
     setTimeout(() => {
       setSuccessMessage("✅ Booking request submitted successfully! Awaiting faculty approval...");
       setSelectedEquipment("");
@@ -64,7 +72,7 @@ function BookEquipment() {
     }, 1000);
   };
 
-  const equipment = MOCK_EQUIPMENT.find(e => e.id === parseInt(selectedEquipment));
+  const selectedEquipmentDetails = equipment.find(e => e.id === parseInt(selectedEquipment));
 
   return (
     <div className="book-equipment-page">
@@ -101,25 +109,25 @@ function BookEquipment() {
             </div>
 
             {/* Equipment Details */}
-            {equipment && (
+            {selectedEquipmentDetails && (
               <div className="equipment-details">
                 <h4>Selected Equipment Details</h4>
                 <div className="details-grid">
                   <div className="detail">
                     <span className="label">Category:</span>
-                    <span className="value">{equipment.category}</span>
+                    <span className="value">{selectedEquipmentDetails.category}</span>
                   </div>
                   <div className="detail">
                     <span className="label">Specifications:</span>
-                    <span className="value">{equipment.specifications}</span>
+                    <span className="value">{selectedEquipmentDetails.specifications}</span>
                   </div>
                   <div className="detail">
                     <span className="label">Location:</span>
-                    <span className="value">{equipment.location}</span>
+                    <span className="value">{selectedEquipmentDetails.location}</span>
                   </div>
                   <div className="detail">
                     <span className="label">Last Serviced:</span>
-                    <span className="value">{equipment.lastServiced}</span>
+                    <span className="value">{selectedEquipmentDetails.lastServiced}</span>
                   </div>
                 </div>
               </div>

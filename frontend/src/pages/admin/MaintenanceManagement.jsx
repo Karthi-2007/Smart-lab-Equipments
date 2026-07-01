@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import "../Dashboard.css";
-
-const maintenance = [
-  { task: "Calibrate Digital Oscilloscope", owner: "Electronics Team", due: "Jul 01, 2026", priority: "High" },
-  { task: "Replace 3D Printer Nozzle", owner: "Manufacturing Team", due: "Jul 02, 2026", priority: "Critical" },
-  { task: "Inspect Hydraulic Test Rig", owner: "Mechanical Team", due: "Jul 04, 2026", priority: "Medium" },
-  { task: "Firmware update for PLC Kit", owner: "Automation Team", due: "Jul 06, 2026", priority: "Low" },
-];
+import { useData } from "../../context/DataContext";
+import React from "react";
 
 function MaintenanceManagement() {
+  const { equipment } = useData();
+  const maintenance = equipment
+    .filter(e => e.status === 'maintenance')
+    .map(e => ({ task: `Service for ${e.name}`, owner: `${e.category} Team`, due: e.maintenanceDate, priority: "High" }));
+
   return (
     <main className="dashboard">
       <header className="review-header">

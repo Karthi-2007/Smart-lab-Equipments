@@ -68,8 +68,20 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Protected Routes */}
-
         <Route element={<Layout />}>
+          {/* Common Protected Routes */}
+          <Route path="/settings" element={<ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}><Settings /></ProtectedRoute>} />
+          <Route path="/help" element={<ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}><Help /></ProtectedRoute>} />
+          <Route path="/privacy" element={<ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}><PrivacyPolicy /></ProtectedRoute>} />
+          <Route path="/terms" element={<ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}><TermsOfService /></ProtectedRoute>} />
+          <Route path="/contact" element={<ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}><ContactUs /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}><Notification /></ProtectedRoute>} />
+          <Route path="/student/profile" element={<ProtectedRoute allowedRoles={["STUDENT"]}><Profile /></ProtectedRoute>} />
+          <Route path="/faculty/profile" element={<ProtectedRoute allowedRoles={["FACULTY"]}><FacultyProfile /></ProtectedRoute>} />
+          <Route path="/admin/profile" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminProfile /></ProtectedRoute>} />
+          
+          {/* The old /notifications route was here, it's now grouped above */}
+          
         <Route path="/notifications" element={<Notification />} />
 
           {/* Student */}
@@ -119,15 +131,6 @@ function App() {
             }
           />
 
-          <Route
-            path="/student/profile"
-            element={
-              <ProtectedRoute allowedRoles={["STUDENT"]}>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-
           {/* Faculty */}
 
           <Route
@@ -163,15 +166,6 @@ function App() {
   element={
     <ProtectedRoute allowedRoles={["FACULTY"]}>
       <Analytics />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/faculty/profile"
-  element={
-    <ProtectedRoute allowedRoles={["FACULTY"]}>
-      <FacultyProfile />
     </ProtectedRoute>
   }
 />
@@ -243,63 +237,11 @@ function App() {
   }
 />
 
-<Route
-  path="/admin/profile"
-  element={
-    <ProtectedRoute allowedRoles={["ADMIN"]}>
-      <AdminProfile />
-    </ProtectedRoute>
-  }
-/>
-
         </Route>
 
         <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route path="*" element={<NotFound />} />
-        <Route
-  path="/settings"
-  element={
-    <ProtectedRoute allowedRoles={["STUDENT","FACULTY","ADMIN"]}>
-      <Settings />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/help"
-  element={
-    <ProtectedRoute allowedRoles={["STUDENT","FACULTY","ADMIN"]}>
-      <Help />
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/privacy"
-  element={
-    <ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}>
-      <PrivacyPolicy />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/terms"
-  element={
-    <ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}>
-      <TermsOfService />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/contact"
-  element={
-    <ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}>
-      <ContactUs />
-    </ProtectedRoute>
-  }
-/>
       </Routes>
   );
 }

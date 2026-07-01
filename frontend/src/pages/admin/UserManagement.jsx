@@ -1,15 +1,11 @@
 import { Link } from "react-router-dom";
 import "../Dashboard.css";
-
-const users = [
-  { id: "717824226", name: "Karthikeyan S", role: "Student", dept: "IT", status: "Active" },
-  { id: "717824227", name: "Hariharan A", role: "Student", dept: "CSE", status: "Active" },
-  { id: "FAC001", name: "Dr. Priya R", role: "Faculty", dept: "ECE", status: "Active" },
-  { id: "FAC002", name: "Dr. Mahesh K", role: "Faculty", dept: "Mechanical", status: "Review" },
-  { id: "ADM001", name: "Admin User", role: "Admin", dept: "Administration", status: "Active" },
-];
+import { useData } from "../../context/DataContext";
+import React from "react";
 
 function UserManagement() {
+  const { users } = useData();
+
   return (
     <main className="dashboard">
       <header className="review-header">
@@ -40,7 +36,7 @@ function UserManagement() {
             <tbody>
               {users.map((user) => (
                 <tr key={user.id}>
-                  <td>{user.id}</td>
+                  <td>{user.regNo}</td>
                   <td className="strong-cell">{user.name}</td>
                   <td>{user.role}</td>
                   <td>{user.dept}</td>

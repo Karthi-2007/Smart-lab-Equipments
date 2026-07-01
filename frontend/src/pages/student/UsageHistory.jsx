@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import "./UsageHistory.css";
-import { MOCK_BOOKINGS } from "../../data/mockData";
 import { useAuth } from "../../context/AuthContext";
+import { useData } from "../../context/DataContext";
 
 function UsageHistory() {
   const { user } = useAuth();
+  const { getBookingsByStudent } = useData();
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterMonth, setFilterMonth] = useState("all");
 
-  // Filter bookings for current student
-  const studentBookings = MOCK_BOOKINGS.filter(b => b.studentName === user?.name)
+  // Get bookings for the current student
+  const studentBookings = getBookingsByStudent(user?.id)
     .sort((a, b) => new Date(b.bookingDate) - new Date(a.bookingDate));
 
   const statuses = ["all", "pending", "confirmed", "completed"];

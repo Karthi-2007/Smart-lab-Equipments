@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./FaultReport.css";
 import { useAuth } from "../../context/AuthContext";
+import { useData } from "../../context/DataContext";
 
 function FaultReport() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { equipment, createFault } = useData();
   const [formData, setFormData] = useState({
     equipment: "",
     issue: "",
@@ -17,14 +19,7 @@ function FaultReport() {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const equipmentOptions = [
-    "Oscilloscope",
-    "Multimeter",
-    "Function Generator",
-    "Power Supply",
-    "Logic Analyzer",
-    "Soldering Station",
-  ];
+  const equipmentOptions = equipment.map(e => e.name);
 
   const validateForm = () => {
     const newErrors = {};
@@ -56,6 +51,11 @@ function FaultReport() {
     }
 
     setLoading(true);
+    createFault({
+      ...formData,
+      reportedBy: user.name,
+      studentId: user.id,
+    });
     setTimeout(() => {
       setSuccessMessage("✅ Fault report submitted successfully! Technicians have been notified.");
       setFormData({ equipment: "", issue: "", description: "", severity: "medium", photos: null });
