@@ -1,306 +1,370 @@
-.equipment-list-page {
+/* ===========================
+   Equipment List
+=========================== */
+
+.equipment-page {
   padding: 30px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: #f5f7fb;
   min-height: 100vh;
 }
 
-.page-header {
-  text-align: center;
-  margin-bottom: 40px;
-  animation: fadeInDown 0.5s ease;
-}
+/* ===========================
+   Header
+=========================== */
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.page-header h1 {
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin: 0 0 10px 0;
-}
-
-.page-header p {
-  color: #7f8c8d;
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-/* Filters Section */
-.filters-section {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
+.equipment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  display: flex;
+}
+
+.equipment-header h1 {
+  font-size: 2rem;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.equipment-header p {
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* ===========================
+   Statistics
+=========================== */
+
+.equipment-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
   gap: 20px;
-  flex-wrap: wrap;
-  align-items: flex-end;
+  margin-bottom: 30px;
 }
 
-.filter-group {
-  flex: 1;
-  min-width: 200px;
+.stat-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+  transition: .3s;
+  border-left: 6px solid #2563eb;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card h2 {
+  font-size: 2rem;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.stat-card span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.stat-card.available {
+  border-left-color: #16a34a;
+}
+
+.stat-card.inuse {
+  border-left-color: #f59e0b;
+}
+
+.stat-card.maintenance {
+  border-left-color: #ef4444;
+}
+
+/* ===========================
+   Filters
+=========================== */
+
+.filter-container {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
 }
 
-.filter-group label {
-  font-weight: 600;
-  color: #555;
-  font-size: 0.9rem;
-}
-
-.search-input,
-.filter-group select {
-  padding: 12px 15px;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  background: #f8f9fa;
-  color: #555;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-.search-input {
+.filter-container input,
+.filter-container select {
   flex: 1;
+  min-width: 220px;
+  padding: 12px 16px;
+  border: 1px solid #dbe4f0;
+  border-radius: 10px;
+  font-size: 15px;
+  background: white;
+  transition: .3s;
 }
 
-.search-input:focus,
-.filter-group select:focus {
+.filter-container input:focus,
+.filter-container select:focus {
   outline: none;
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.15);
 }
 
-/* Results Info */
-.results-info {
-  padding: 15px 20px;
-  background: white;
-  border-radius: 8px;
+/* ===========================
+   Result Count
+=========================== */
+
+.result-count {
   margin-bottom: 20px;
-  color: #7f8c8d;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #475569;
+  font-size: 15px;
 }
 
-.results-info p {
-  margin: 0;
-}
+/* ===========================
+   Grid
+=========================== */
 
-/* Equipment Grid */
 .equipment-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill,minmax(340px,1fr));
   gap: 25px;
-  animation: fadeIn 0.5s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+/* ===========================
+   Equipment Card
+=========================== */
 
 .equipment-card {
   background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 15px 35px rgba(0,0,0,.08);
+  transition: .3s;
   display: flex;
   flex-direction: column;
 }
 
 .equipment-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
 }
 
-.card-header {
+.equipment-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
 }
 
-.equipment-icon {
-  font-size: 2.5rem;
-}
-
-.status-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.status-available {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-}
-
-.status-in-use {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.status-maintenance {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-/* Card Body */
-.card-body {
-  padding: 20px;
-  flex: 1;
-}
-
-.card-body h3 {
-  margin: 0 0 10px 0;
-  color: #2c3e50;
-  font-size: 1.3rem;
-}
-
-.category {
-  margin: 0 0 12px 0;
-  color: #667eea;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.description {
-  margin: 0 0 15px 0;
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.specs {
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.specs p {
-  margin: 5px 0;
-  color: #555;
-  font-size: 0.9rem;
-}
-
-.specs strong {
-  color: #2c3e50;
-}
-
-.meta-info {
+.equipment-image {
+  width: 70px;
+  height: 70px;
+  background: #eef4ff;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.3rem;
+  border-radius: 15px;
 }
 
-.meta-info p {
-  margin: 0;
-  color: #7f8c8d;
-  font-size: 0.9rem;
+.equipment-card h3 {
+  margin: 20px 0 8px;
+  color: #1e293b;
 }
 
-/* Card Footer */
-.card-footer {
-  padding: 15px 20px;
-  border-top: 1px solid #e9ecef;
-  background: #f8f9fa;
-}
-
-.btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
+.equipment-category {
+  color: #2563eb;
   font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
+  margin-bottom: 10px;
 }
 
-.btn-book {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+.equipment-description {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* ===========================
+   Status
+=========================== */
+
+.status {
+  padding: 7px 15px;
+  border-radius: 50px;
   color: white;
+  font-size: 12px;
+  font-weight: bold;
 }
 
-.btn-book:hover {
+.status.available {
+  background: #16a34a;
+}
+
+.status.in-use {
+  background: #f59e0b;
+}
+
+.status.maintenance {
+  background: #ef4444;
+}
+
+/* ===========================
+   Details
+=========================== */
+
+.equipment-details {
+  margin-top: 12px;
+}
+
+.equipment-details p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+/* ===========================
+   AI Prediction
+=========================== */
+
+.prediction-box {
+  margin-top: 20px;
+  padding: 18px;
+  background: linear-gradient(135deg,#dbeafe,#eff6ff);
+  border-radius: 15px;
+}
+
+.prediction-box h4 {
+  margin-bottom: 12px;
+  color: #1e40af;
+}
+
+.prediction-box p {
+  margin: 8px 0;
+  color: #334155;
+}
+
+.prediction-box progress {
+  width: 100%;
+  height: 12px;
+  margin-top: 10px;
+  appearance: none;
+}
+
+.prediction-box progress::-webkit-progress-bar {
+  background: #dbeafe;
+  border-radius: 10px;
+}
+
+.prediction-box progress::-webkit-progress-value {
+  background: linear-gradient(90deg,#2563eb,#06b6d4);
+  border-radius: 10px;
+}
+
+.prediction-box progress::-moz-progress-bar {
+  background: linear-gradient(90deg,#2563eb,#06b6d4);
+}
+
+/* ===========================
+   Footer
+=========================== */
+
+.equipment-footer {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+.book-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#2563eb,#0ea5e9);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.book-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+  box-shadow: 0 12px 25px rgba(37,99,235,.35);
 }
 
-.btn-disabled {
-  background: #ccc;
-  color: #999;
+.disabled-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #cbd5e1;
+  color: white;
   cursor: not-allowed;
 }
 
-/* No Results */
-.no-results {
-  text-align: center;
-  padding: 60px 20px;
+/* ===========================
+   Empty State
+=========================== */
+
+.no-data {
+  margin-top: 50px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 15px;
+  text-align: center;
+  padding: 60px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
 }
 
-.no-results p {
-  margin: 10px 0;
-  color: #7f8c8d;
-  font-size: 1.1rem;
+.no-data h2 {
+  margin-bottom: 10px;
+  color: #334155;
 }
 
-.no-results p:first-child {
-  font-size: 1.3rem;
-  margin-bottom: 15px;
+.no-data p {
+  color: #64748b;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .equipment-list-page {
-    padding: 15px;
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:768px) {
+
+  .equipment-page {
+    padding: 18px;
   }
 
-  .page-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .filters-section {
+  .equipment-header {
     flex-direction: column;
-    gap: 15px;
+    align-items: flex-start;
   }
 
-  .filter-group {
-    width: 100%;
-  }
-
-  .search-input {
-    width: 100%;
+  .equipment-header h1 {
+    font-size: 1.7rem;
   }
 
   .equipment-grid {
     grid-template-columns: 1fr;
   }
+
+  .filter-container {
+    flex-direction: column;
+  }
+
+  .filter-container input,
+  .filter-container select {
+    width: 100%;
+  }
+
+  .equipment-stats {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+}
+
+@media (max-width:500px){
+
+  .equipment-stats{
+      grid-template-columns:1fr;
+  }
+
 }

@@ -175,10 +175,10 @@ const maintenanceCount = MOCK_EQUIPMENT.filter(
             <div className="card">
               <h3>⚡ Quick Actions</h3>
               <div className="action-buttons">
-                <Link href="/student/book" className="btn btn-primary">Book Equipment</Link>
-                <Link href="/student/usage" className="btn btn-secondary">Usage History</Link>
-                <Link href="/student/fault" className="btn btn-danger">Report Fault</Link>
-                <Link href="/student/profile" className="btn btn-info">My Profile</Link>
+                <Link to="/student/book" className="btn btn-primary">Book Equipment</Link>
+                <Link to="/student/usage" className="btn btn-secondary">Usage History</Link>
+                <Link to="/student/fault" className="btn btn-danger">Report Fault</Link>
+                <Link to="/student/profile" className="btn btn-info">My Profile</Link>
               </div>
             </div>
           </div>

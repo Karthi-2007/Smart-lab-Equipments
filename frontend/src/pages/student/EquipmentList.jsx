@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./EquipmentList.css";
-import { MOCK_EQUIPMENT } from "../../data/mockData";
+import { MOCK_EQUIPMENT, STATS } from "../../data/mockData";
+import "./EquipmentList.css";
 
 function EquipmentList() {
   const navigate = useNavigate();
@@ -66,19 +67,19 @@ function EquipmentList() {
           <span>Total Equipment</span>
         </div>
 
-        <div className="stat-card available">
-          <h2>{available}</h2>
-          <span>Available</span>
+       <div className="stat-card available">
+       <h2>{available}</h2>
+       <span>Available</span>
         </div>
 
         <div className="stat-card inuse">
-          <h2>{inUse}</h2>
-          <span>In Use</span>
+        <h2>{inUse}</h2>
+        <span>In Use</span>
         </div>
 
         <div className="stat-card maintenance">
-          <h2>{maintenance}</h2>
-          <span>Maintenance</span>
+        <h2>{maintenance}</h2>
+        <span>Maintenance</span>
         </div>
 
       </div>
@@ -99,7 +100,9 @@ function EquipmentList() {
           onChange={(e) => setCategory(e.target.value)}
         >
           {categories.map((cat) => (
-            <option key={cat}>{cat}</option>
+            <option key={cat} value={cat}>
+           {cat}
+          </option>
           ))}
         </select>
 
