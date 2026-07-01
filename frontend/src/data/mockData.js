@@ -207,14 +207,49 @@ export const MOCK_USERS = [
 ];
 
 export const STATS = {
-  totalEquipment: 6,
-  availableEquipment: 4,
-  inUseEquipment: 1,
-  maintenanceEquipment: 1,
-  totalBookings: 1250,
-  thisMonthBookings: 145,
-  pendingApprovals: 2,
-  faultsPending: 1,
+  totalEquipment: MOCK_EQUIPMENT.length,
+
+  availableEquipment: MOCK_EQUIPMENT.filter(
+    (e) => e.status === "available"
+  ).length,
+
+  inUseEquipment: MOCK_EQUIPMENT.filter(
+    (e) => e.status === "in-use"
+  ).length,
+
+  maintenanceEquipment: MOCK_EQUIPMENT.filter(
+    (e) => e.status === "maintenance"
+  ).length,
+
+  totalBookings: MOCK_BOOKINGS.length,
+
+  confirmedBookings: MOCK_BOOKINGS.filter(
+    (b) => b.status === "confirmed"
+  ).length,
+
+  pendingApprovals: MOCK_BOOKINGS.filter(
+    (b) => b.status === "pending"
+  ).length,
+
+  completedBookings: MOCK_BOOKINGS.filter(
+    (b) => b.status === "completed"
+  ).length,
+
+  totalFaults: MOCK_FAULTS.length,
+
+  faultsPending: MOCK_FAULTS.filter(
+    (f) => f.status === "pending-review"
+  ).length,
+
+  faultsResolved: MOCK_FAULTS.filter(
+    (f) => f.status === "resolved"
+  ).length,
+
+  faultsUnderRepair: MOCK_FAULTS.filter(
+    (f) => f.status === "under-repair"
+  ).length,
+
   maintenanceAccuracy: "95%",
-  averageDowntime: "2.3 hours"
+
+  averageDowntime: "2.3 Hours",
 };

@@ -14,11 +14,12 @@ function Navbar() {
 
   const profileRef = useRef(null);
 
-  const initials=user?.name
-  ?.split(" ")
-  .map(n=>n[0])
-  .join("")
-  .toUpperCase();
+ const initials =
+user?.name
+?.split(" ")
+.map(name => name.charAt(0))
+.join("")
+.toUpperCase() || "";
 
 useEffect(()=>{
 
@@ -92,7 +93,7 @@ return ()=>document.removeEventListener("mousedown",handleClick);
         {/* Right Section */}
         <div className="navbar-right">
           {/* Notifications */}
-          <div className="notification-bell">
+          <Link to="/notifications" className="notification-bell">
             <span className="bell-icon">🔔</span>
             {notificationCount > 0 && (
             <span className="notification-badge">
@@ -100,7 +101,7 @@ return ()=>document.removeEventListener("mousedown",handleClick);
             
             </span>
     )}
-          </div>
+          </Link>
 
           {/* Profile Dropdown */}
           <div className="profile-dropdown" ref={profileRef}>
@@ -124,8 +125,11 @@ return ()=>document.removeEventListener("mousedown",handleClick);
                   <p className="user-role">{user?.role}</p>
                 </div>
                 <div className="dropdown-divider"></div>
-                <Link to={`/${user.role.toLowerCase()}/profile`} className="dropdown-item">
-                  👤 My Profile
+<Link
+to={`/${user?.role?.toLowerCase()}/profile`}
+className="dropdown-item"
+onClick={()=>setIsProfileOpen(false)}
+>                  👤 My Profile
                 </Link>
                 <Link to="/settings" className="dropdown-item">
                   ⚙️ Settings

@@ -168,7 +168,7 @@ const maintenanceCount = MOCK_EQUIPMENT.filter(
                   <span>Maintenance:{maintenanceCount}</span>
                 </div>
               </div>
-              <Link href="/student/equipment" className="view-link">View all equipment →</Link>
+              <Link to="/student/equipment" className="view-link">View all equipment →</Link>
             </div>
 
             {/* Quick Actions */}

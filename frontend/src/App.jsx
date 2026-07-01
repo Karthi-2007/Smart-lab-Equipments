@@ -9,6 +9,13 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Unauthorized from "./pages/Unauthorized";
 import Home from "./pages/Home";
+import ForgotPassword from "./pages/ForgotPassword";
+import Settings from "./pages/common/Settings";
+import Help from "./pages/common/Help";
+import PrivacyPolicy from "./pages/common/PrivacyPolicy";
+import TermsOfService from "./pages/common/TermsOfService";
+import ContactUs from "./pages/common/ContactUs";
+import Notification from "./pages/common/Notification";
 
 // Student Pages
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -55,12 +62,15 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        
 
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Protected Routes */}
 
         <Route element={<Layout />}>
+        <Route path="/notifications" element={<Notification />} />
 
           {/* Student */}
 
@@ -247,6 +257,49 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route path="*" element={<NotFound />} />
+        <Route
+  path="/settings"
+  element={
+    <ProtectedRoute allowedRoles={["STUDENT","FACULTY","ADMIN"]}>
+      <Settings />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/help"
+  element={
+    <ProtectedRoute allowedRoles={["STUDENT","FACULTY","ADMIN"]}>
+      <Help />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/privacy"
+  element={
+    <ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}>
+      <PrivacyPolicy />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/terms"
+  element={
+    <ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}>
+      <TermsOfService />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/contact"
+  element={
+    <ProtectedRoute allowedRoles={["STUDENT", "FACULTY", "ADMIN"]}>
+      <ContactUs />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
   );
 }

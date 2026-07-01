@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Profile.css";
 import { useAuth } from "../../context/AuthContext";
+import { Link } from "react-router";
 
 function Profile() {
   const { user } = useAuth();
@@ -158,30 +159,30 @@ function Profile() {
         <div className="quick-actions">
           <h3>⚡ Quick Actions</h3>
           <div className="action-cards">
-            <a href="/student/dashboard" className="action-card">
+            <Link to="/student/dashboard" className="action-card">
               <span className="icon">📊</span>
               <span className="text">Dashboard</span>
-            </a>
-            <a href="/student/equipment" className="action-card">
+            </Link>
+            <Link to="/student/equipment" className="action-card">
               <span className="icon">🔧</span>
               <span className="text">Equipment</span>
-            </a>
-            <a href="/student/book" className="action-card">
+            </Link>
+            <Link to="/student/book" className="action-card">
               <span className="icon">📅</span>
               <span className="text">Book Equipment</span>
-            </a>
-            <a href="/student/usage" className="action-card">
+            </Link>
+            <Link to="/student/usage" className="action-card">
               <span className="icon">📈</span>
               <span className="text">Usage History</span>
-            </a>
-            <a href="/student/fault" className="action-card">
+            </Link>
+            <Link to="/student/fault" className="action-card">
               <span className="icon">⚠️</span>
               <span className="text">Report Fault</span>
-            </a>
-            <a href="/logout" className="action-card logout">
+            </Link>
+            <Link to="/login" className="action-card logout">
               <span className="icon">🚪</span>
               <span className="text">Logout</span>
-            </a>
+            </Link>
           </div>
         </div>
 
