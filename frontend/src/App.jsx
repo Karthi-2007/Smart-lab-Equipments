@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Unauthorized from "./pages/Unauthorized";
+import Home from "./pages/Home";
 
 // Student Pages
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -50,7 +51,7 @@ function App() {
   return (
       <Routes>
         {/* Public Routes */}
-
+        <Route path="/" element={<Home/>} />
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />

@@ -129,20 +129,35 @@ if (password.length < 6) {
         <div className="login-demo">
           <p>Demo credentials:</p>
           <button
-type="button"
-onClick={()=>
-setUser({
-email:"student@lab.com",
-password:"student123"
-})
-}
->
-
-Student Demo
-
-</button>
-          <code>faculty@lab.com / faculty123</code>
-          <code>admin@lab.com / admin123</code>
+          type="button"
+          onClick={()=>
+          setUser({
+          email:"student@lab.com",
+          password:"student123"
+          })
+          }
+          >Student Demo
+          </button>&nbsp;&nbsp;
+          <button
+          type="button"
+          onClick={()=>
+          setUser({
+          email:"faculty@lab.com",
+          password:"faculty123"
+          })
+          }
+          >Faculty Demo
+          </button>&nbsp;&nbsp;
+          <button
+          type="button"
+          onClick={()=>
+          setUser({
+          email:"admin@lab.com",
+          password:"admin123"
+          })
+          }
+          >Admin Demo
+          </button>
         </div>
       </div>
     </div>

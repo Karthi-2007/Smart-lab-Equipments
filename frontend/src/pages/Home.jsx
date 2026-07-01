@@ -26,7 +26,7 @@ function Home() {
 
     <div className="buttons">
       <button onClick={() => navigate("/login")}>
-        Get Started
+        Login
       </button>
 
       <button onClick={() => navigate("/register")}>
