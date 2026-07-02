@@ -14,12 +14,11 @@ function Navbar() {
 
   const profileRef = useRef(null);
 
- const initials =
-user?.name
-?.split(" ")
-.map(name => name.charAt(0))
-.join("")
-.toUpperCase() || "";
+const initials = user?.name
+  ?.split(" ")
+  .map(name => name.charAt(0))
+  .join("")
+  .toUpperCase();
 
   const handleLogout = useCallback(() => {
     if (!window.confirm("Logout from LabSync AI?")) return;

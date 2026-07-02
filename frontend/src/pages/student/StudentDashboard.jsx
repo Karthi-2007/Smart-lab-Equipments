@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import "./StudentDashboard.css";
 import { Link } from "react-router-dom";
 import { useData } from "../../context/DataContext";
+import { useMemo } from "react";
 
 function StudentDashboard() {
   const { user } = useAuth();
@@ -12,11 +13,19 @@ function StudentDashboard() {
   // Filter bookings for current student
   const studentBookings = getBookingsByStudent(user?.id);
   const confirmedBookings = studentBookings.filter(b => b.status === "confirmed");
+  const cancelledBookings =
+studentBookings.filter(
+b=>b.status==="cancelled"
+);
   const pendingBookings = studentBookings.filter(b => b.status === "pending");
   const completedBookings = studentBookings.filter(b => b.status === "completed");
 
-  const availableCount = equipment.filter(item => item.status === "available").length;
-  const inUseCount = equipment.filter(item => item.status === "in-use").length;
+const availableCount=useMemo(
+()=>equipment.filter(
+e=>e.status==="available"
+).length,
+[equipment]
+);  const inUseCount = equipment.filter(item => item.status === "in-use").length;
   const maintenanceCount = equipment.filter(item => item.status === "maintenance").length;
 
   return (
@@ -104,7 +113,7 @@ function StudentDashboard() {
                       </div>
                       <div className="booking-details">
                         <p className="equipment-name">{booking.equipmentName}</p>
-                        <p className="purpose">Purpose: {booking.purpose}</p>
+                        <p className="purpose">Purpose: {booking.reason}</p>
                       </div>
                       <span className="badge badge-success">Confirmed</span>
                     </div>
@@ -147,15 +156,15 @@ function StudentDashboard() {
               <div className="availability-stats">
                 <div className="availability-item">
                   <span className="dot available"></span>
-                  <span>Available:{availableCount}</span>
+                  <span>🟢Available:{availableCount}</span>
                 </div>
                 <div className="availability-item">
                   <span className="dot in-use"></span>
-                  <span>In Use:{inUseCount}</span>
+                  <span>🔵In Use:{inUseCount}</span>
                 </div>
                 <div className="availability-item">
                   <span className="dot maintenance"></span>
-                  <span>Maintenance:{maintenanceCount}</span>
+                  <span>🔴Maintenance:{maintenanceCount}</span>
                 </div>
               </div>
               <Link to="/student/equipment" className="view-link">View all equipment →</Link>
@@ -199,7 +208,7 @@ function StudentDashboard() {
                         <td>{booking.equipmentName}</td>
                         <td>{booking.bookingDate}</td>
                         <td>{booking.startTime} - {booking.endTime}</td>
-                        <td>{booking.purpose}</td>
+                        <td>{booking.reason}</td>
                         <td>
                           <span className={`badge badge-${booking.status === 'completed' ? 'success' : booking.status === 'confirmed' ? 'info' : 'warning'}`}>
                             {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
@@ -222,18 +231,18 @@ function StudentDashboard() {
       {activeTab === "equipment" && (
         <div className="tab-content">
           <div className="equipment-grid">
-            {MOCK_EQUIPMENT.map(equipment => (
+            {equipment.map((equipment) => (
               <div key={equipment.id} className="equipment-card">
                 <div className="equipment-header">
-                  <span className="equipment-icon">{equipment.image}</span>
+                  <span className="equipment-icon">{equipment.category}</span>
                   <span className={`status-badge status-${equipment.status}`}>
                     {equipment.status.charAt(0).toUpperCase() + equipment.status.slice(1)}
                   </span>
                 </div>
                 <h4>{equipment.name}</h4>
                 <p className="category">{equipment.category}</p>
-                <p className="specs">{equipment.specifications}</p>
-                <p className="location">📍 {equipment.location}</p>
+                <p className="specs">{equipment.description}</p>
+                <p className="location">📍 {equipment.labName}</p>
                 <div className="card-footer">
                   {equipment.status === 'available' ? (
                     <Link to="/student/book" className="btn btn-sm btn-primary">Book Now</Link>

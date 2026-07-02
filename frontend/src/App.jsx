@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -16,6 +16,7 @@ import PrivacyPolicy from "./pages/common/PrivacyPolicy";
 import TermsOfService from "./pages/common/TermsOfService";
 import ContactUs from "./pages/common/ContactUs";
 import Notification from "./pages/common/Notification";
+import NotFound from "./pages/NotFound";
 
 // Student Pages
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -45,15 +46,6 @@ import AIPredictions from "./pages/admin/AIPredictions";
 import AdminProfile from "./pages/admin/AdminProfile";
 
 
-function NotFound() {
-  return (
-    <div className="error-page">
-      <h1>404</h1>
-      <p>Page Not Found</p>
-    </div>
-  );
-}
-
 function App() {
   return (
       <Routes>
@@ -82,7 +74,6 @@ function App() {
           
           {/* The old /notifications route was here, it's now grouped above */}
           
-        <Route path="/notifications" element={<Notification />} />
 
           {/* Student */}
 
@@ -239,9 +230,7 @@ function App() {
 
         </Route>
 
-        <Route path="/" element={<Navigate to="/login" replace />} />
-
-        <Route path="*" element={<NotFound />} />
+        <Route path="/NotFound" element={<NotFound />} />
       </Routes>
   );
 }

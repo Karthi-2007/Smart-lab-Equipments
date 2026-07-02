@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./EquipmentList.css";
 import { useData } from "../../context/DataContext";
 
+
 function EquipmentList() {
   const navigate = useNavigate();
   const { equipment, stats } = useData();
@@ -137,18 +138,20 @@ function EquipmentList() {
             >
 
               <div className="equipment-top">
+  <div className="equipment-image">
+    <img
+      src={equipment.image}
+      alt={equipment.name}
+      className="equipment-img"
+    />
+  </div>
 
-                <div className="equipment-image">
-                  {equipment.image}
-                </div>
-
-                <span
-                  className={`status ${equipment.status}`}
-                >
-                  {equipment.status.toUpperCase()}
-                </span>
-
-              </div>
+  <div className="status-wrapper">
+    <span className={`status ${equipment.status}`}>
+      {equipment.status.toUpperCase()}
+    </span>
+  </div>
+</div>
 
               <h3>{equipment.name}</h3>
 
@@ -162,30 +165,13 @@ function EquipmentList() {
 
               <div className="equipment-details">
 
-                <p>
-                  <strong>Location:</strong>{" "}
-                  {equipment.location}
-                </p>
-
-                <p>
-                  <strong>Specifications:</strong>{" "}
-                  {equipment.specifications}
-                </p>
-
-                <p>
-                  <strong>Last Service:</strong>{" "}
-                  {equipment.lastServiced}
-                </p>
-
-                <p>
-                  <strong>Next Maintenance:</strong>{" "}
-                  {equipment.maintenanceDate}
-                </p>
-
-                <p>
-                  <strong>Weekly Usage:</strong>{" "}
-                  {equipment.bookingsPerWeek}
-                </p>
+                <p><strong>Lab:</strong> {equipment.labName}</p>
+<p><strong>Asset ID:</strong> {equipment.assetId}</p>
+<p><strong>Condition:</strong> {equipment.condition}</p>
+<p><strong>Last Maintenance:</strong> {equipment.lastMaintenance}</p>
+<p><strong>Next Maintenance:</strong> {equipment.nextMaintenance}</p>
+<p><strong>Utilization:</strong> {equipment.utilizationRate}</p>
+<p><strong>Total Bookings:</strong> {equipment.totalBookings}</p>   
 
               </div>
 

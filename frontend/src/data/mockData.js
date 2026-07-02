@@ -1,4 +1,11 @@
 // Mock data for equipment, bookings, and users
+import oscilloscopeImg from "../assets/images/oscilloscope.png";
+import multimeterImg from "../assets/images/multimeter.png";
+import powerSupplyImg from "../assets/images/power-supply.png";
+import logicAnalyzerImg from "../assets/images/logic-analyzer.png";
+import solderingStationImg from "../assets/images/soldering-station.png";
+import microscopeImg from "../assets/images/microscope.png";
+
 export const MOCK_EQUIPMENT = [
   {
     id: 1,
@@ -7,7 +14,7 @@ export const MOCK_EQUIPMENT = [
     status: "available",
     description: "Digital Oscilloscope 200MHz",
     specifications: "200MHz, 2 GSa/s, 7 TFT Display",
-    image: "🔬",
+    image: oscilloscopeImg,
     location: "Lab A - Bench 1",
     maintenanceDate: "2026-07-15",
     lastServiced: "2026-06-01",
@@ -20,7 +27,7 @@ export const MOCK_EQUIPMENT = [
     status: "available",
     description: "Digital Multimeter with True RMS",
     specifications: "AC/DC Voltage, Current, Resistance, Capacitance",
-    image: "⚡",
+    image: multimeterImg,
     location: "Lab A - Bench 2",
     maintenanceDate: "2026-08-10",
     lastServiced: "2026-05-15",
@@ -33,7 +40,7 @@ export const MOCK_EQUIPMENT = [
     status: "in-use",
     description: "Arbitrary Function Generator 30MHz",
     specifications: "30MHz, 250 MSa/s, Multiple Waveforms",
-    image: "📡",
+    image: microscopeImg,
     location: "Lab B - Bench 1",
     maintenanceDate: "2026-07-20",
     lastServiced: "2026-06-10",
@@ -46,7 +53,7 @@ export const MOCK_EQUIPMENT = [
     status: "maintenance",
     description: "Programmable DC Power Supply 0-30V",
     specifications: "0-30V, 0-10A, USB Interface",
-    image: "🔌",
+    image: powerSupplyImg,
     location: "Lab A - Bench 3",
     maintenanceDate: "2026-06-30",
     lastServiced: "2026-04-20",
@@ -59,7 +66,7 @@ export const MOCK_EQUIPMENT = [
     status: "available",
     description: "USB Logic Analyzer 34 Channels",
     specifications: "34 Channels, 1GHz Sampling, 34MB Memory",
-    image: "🔍",
+    image: logicAnalyzerImg,
     location: "Lab B - Bench 2",
     maintenanceDate: "2026-08-05",
     lastServiced: "2026-06-05",
@@ -72,7 +79,7 @@ export const MOCK_EQUIPMENT = [
     status: "available",
     description: "Digital Soldering Station with Fume Extractor",
     specifications: "200-450°C, ESD Safe, Wet Sponge",
-    image: "🔥",
+    image: solderingStationImg,
     location: "Lab C - Workbench 1",
     maintenanceDate: "2026-07-25",
     lastServiced: "2026-05-30",

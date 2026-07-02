@@ -7,41 +7,9 @@ import {
   useMemo,
   useState,
 } from "react";
+import { MOCK_USERS } from "./mockUsers.js";
 
 const AuthContext = createContext(null);
-
-const MOCK_USERS = [
-  {
-    id: 1,
-    name: "Karthikeyan S",
-    email: "student@lab.com",
-    password: "student123",
-    role: "STUDENT",
-    regNo: "717824226",
-    dept: "Information Technology",
-    year: "2nd Year",
-  },
-  {
-    id: 2,
-    name: "Dr. Priya R",
-    email: "faculty@lab.com",
-    password: "faculty123",
-    role: "FACULTY",
-    regNo: "FAC001",
-    dept: "Electronics",
-    year: "",
-  },
-  {
-    id: 3,
-    name: "Admin User",
-    email: "admin@lab.com",
-    password: "admin123",
-    role: "ADMIN",
-    regNo: "ADM001",
-    dept: "Administration",
-    year: "",
-  },
-];
 
 function withoutPassword(user) {
   const safeUser = { ...user };
@@ -142,5 +110,11 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
 }

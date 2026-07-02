@@ -101,37 +101,70 @@ function BookEquipment() {
                 <option value="">-- Choose Equipment --</option>
                 {availableEquipment.map(eq => (
                   <option key={eq.id} value={eq.id}>
-                    {eq.image} {eq.name} - {eq.location}
-                  </option>
+  {eq.name} ({eq.labName})
+</option>
                 ))}
               </select>
               {errors.equipment && <span className="error-text">{errors.equipment}</span>}
             </div>
 
             {/* Equipment Details */}
-            {selectedEquipmentDetails && (
-              <div className="equipment-details">
-                <h4>Selected Equipment Details</h4>
-                <div className="details-grid">
-                  <div className="detail">
-                    <span className="label">Category:</span>
-                    <span className="value">{selectedEquipmentDetails.category}</span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">Specifications:</span>
-                    <span className="value">{selectedEquipmentDetails.specifications}</span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">Location:</span>
-                    <span className="value">{selectedEquipmentDetails.location}</span>
-                  </div>
-                  <div className="detail">
-                    <span className="label">Last Serviced:</span>
-                    <span className="value">{selectedEquipmentDetails.lastServiced}</span>
-                  </div>
-                </div>
-              </div>
-            )}
+{selectedEquipmentDetails && (
+  <div className="equipment-details">
+    <h4>Selected Equipment Details</h4>
+
+    <div className="details-grid">
+      <div className="detail">
+        <span className="label">Category:</span>
+        <span className="value">
+          {selectedEquipmentDetails.category}
+        </span>
+      </div>
+
+      <div className="detail">
+        <span className="label">Laboratory:</span>
+        <span className="value">
+          {selectedEquipmentDetails.labName}
+        </span>
+      </div>
+
+      <div className="detail">
+        <span className="label">Condition:</span>
+        <span className="value">
+          {selectedEquipmentDetails.condition}
+        </span>
+      </div>
+
+      <div className="detail">
+        <span className="label">Last Maintenance:</span>
+        <span className="value">
+          {selectedEquipmentDetails.lastMaintenance}
+        </span>
+      </div>
+
+      <div className="detail">
+        <span className="label">Next Maintenance:</span>
+        <span className="value">
+          {selectedEquipmentDetails.nextMaintenance}
+        </span>
+      </div>
+
+      <div className="detail">
+        <span className="label">Utilization Rate:</span>
+        <span className="value">
+          {selectedEquipmentDetails.utilizationRate}
+        </span>
+      </div>
+
+      <div className="detail">
+        <span className="label">Description:</span>
+        <span className="value">
+          {selectedEquipmentDetails.description}
+        </span>
+      </div>
+    </div>
+  </div>
+)}
 
             {/* Date & Time */}
             <div className="form-row">

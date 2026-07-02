@@ -33,22 +33,42 @@ function UserManagement() {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.regNo}</td>
-                  <td className="strong-cell">{user.name}</td>
-                  <td>{user.role}</td>
-                  <td>{user.dept}</td>
-                  <td>
-                    <span className={`status-pill ${user.status === "Active" ? "is-success" : "is-warning"}`}>
-                      {user.status}
-                    </span>
-                  </td>
-                  <td><button type="button" className="text-action">View</button></td>
-                </tr>
-              ))}
-            </tbody>
+           <tbody>
+  {users.map((user) => (
+    <tr key={user.id}>
+      <td>{user.userId}</td>
+
+      <td className="strong-cell">
+        {user.name}
+      </td>
+
+      <td>{user.role}</td>
+
+      <td>{user.department}</td>
+
+      <td>
+        <span
+          className={`status-pill ${
+            user.status === "active"
+              ? "is-success"
+              : "is-warning"
+          }`}
+        >
+          {user.status}
+        </span>
+      </td>
+
+      <td>
+        <button
+          type="button"
+          className="text-action"
+        >
+          View
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
           </table>
         </div>
       </section>

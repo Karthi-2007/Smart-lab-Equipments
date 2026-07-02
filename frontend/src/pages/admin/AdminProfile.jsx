@@ -30,27 +30,27 @@ function AdminProfile() {
           <h3>👤 Personal Information</h3>
 
           <div className="info-row">
-            <span>Name</span>
+            <span>Name:&nbsp;</span>
             <strong>{user?.name}</strong>
           </div>
 
           <div className="info-row">
-            <span>Email</span>
+            <span>Email:&nbsp;</span>
             <strong>{user?.email}</strong>
           </div>
 
           <div className="info-row">
-            <span>Employee ID</span>
+            <span>Employee ID:&nbsp;</span>
             <strong>{user?.regNo}</strong>
           </div>
 
           <div className="info-row">
-            <span>Department</span>
+            <span>Department:&nbsp;</span>
             <strong>{user?.dept}</strong>
           </div>
 
           <div className="info-row">
-            <span>Role</span>
+            <span>Role:&nbsp;</span>
             <strong>{user?.role}</strong>
           </div>
         </div>

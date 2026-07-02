@@ -38,13 +38,22 @@ function EquipmentManagement() {
                 <tr key={item.id}>
                   <td>EQ-{item.id}</td>
                   <td className="strong-cell">{item.name}</td>
-                  <td>{item.location}</td>
+                  <td>{item.labName}</td>
                   <td>
-                    <span className={`status-pill ${item.status === "Available" ? "is-success" : item.status === "Booked" ? "is-info" : "is-danger"}`}>
-                      {item.status}
-                    </span>
+                    <span
+  className={`status-pill ${
+    item.status === "available"
+      ? "is-success"
+      : item.status === "in-use"
+      ? "is-info"
+      : "is-danger"
+  }`}
+>
+  {item.status}
+</span>
+                  
                   </td>
-                  <td>{item.bookingsPerWeek * 5}%</td>
+                   <td>{item.utilizationRate}</td>
                   <td><button type="button" className="text-action">Update</button></td>
                 </tr>
               ))}

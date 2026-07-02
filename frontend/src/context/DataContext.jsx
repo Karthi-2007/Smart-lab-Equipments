@@ -1,12 +1,24 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { MOCK_BOOKINGS, MOCK_EQUIPMENT, MOCK_FAULTS, MOCK_USERS } from "./mockData";
+import {useEffect} from "react";
 
 const DataContext = createContext(null);
 
 export function DataProvider({ children }) {
   // ─── BOOKINGS STATE ───
-  const [bookings, setBookings] = useState(MOCK_BOOKINGS);
+ const [bookings,setBookings]=useState(()=>{
+const data=localStorage.getItem("labsync_bookings");
+
+return data?JSON.parse(data):MOCK_BOOKINGS;
+});
+
+useEffect(()=>{
+localStorage.setItem(
+"labsync_bookings",
+JSON.stringify(bookings)
+);
+},[bookings]);
 
   const createBooking = useCallback((newBooking) => {
     const booking = {
@@ -35,6 +47,10 @@ export function DataProvider({ children }) {
 
   const rejectBooking = useCallback((id, rejectionReason) => {
     updateBooking(id, { status: "rejected", rejectionReason });
+  }, [updateBooking]);
+
+  const cancelBooking = useCallback((id,cancelled) => {
+    updateBooking(id, { status: "cancelled",cancelled });
   }, [updateBooking]);
 
   // ─── EQUIPMENT STATE ───

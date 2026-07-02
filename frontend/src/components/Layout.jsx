@@ -7,33 +7,28 @@ import "./Layout.css";
 function Layout() {
   const { user } = useAuth();
 
-  // Public Pages
-  if (!user) {
-    return <Outlet />;
-  }
+  // Don't render layout for public pages
+  if (!user) return <Outlet />;
 
   return (
     <div className="app-layout">
-      {/* Navbar */}
       <Navbar />
 
-      {/* Main Content */}
       <main className="main-content">
         <Outlet />
       </main>
 
-      {/* Footer */}
       <footer className="app-footer">
         <div className="footer-content">
           <p>
             © {new Date().getFullYear()} LabSync AI. All Rights Reserved.
           </p>
 
-          <div className="footer-links">
+          <nav className="footer-links">
             <Link to="/privacy">Privacy Policy</Link>
             <Link to="/terms">Terms of Service</Link>
             <Link to="/contact">Contact Us</Link>
-          </div>
+          </nav>
         </div>
       </footer>
     </div>

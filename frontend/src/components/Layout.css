@@ -1,94 +1,41 @@
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: #f5f7fa;
+.app-layout{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
 }
 
-.layout-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.main-content{
+    flex:1;
+    padding:20px;
 }
 
-.main-content {
-  flex: 1;
-  padding: 0;
-  animation: fadeIn 0.3s ease;
+.app-footer{
+    background:#1e293b;
+    color:#fff;
+    padding:15px 20px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.footer-content{
+    max-width:1400px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
 }
 
-/* Footer */
-.app-footer {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  color: white;
-  padding: 30px 20px;
-  margin-top: 50px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+.footer-links{
+    display:flex;
+    gap:18px;
 }
 
-.footer-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
+.footer-links a{
+    color:#cbd5e1;
+    text-decoration:none;
+    transition:.3s;
 }
 
-.footer-content p {
-  margin: 0;
-  font-size: 0.95rem;
-  opacity: 0.9;
-}
-
-.footer-links {
-  display: flex;
-  gap: 30px;
-}
-
-.footer-links a {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-  color: white;
-  text-decoration: underline;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 15px;
-  }
-
-  .footer-links {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .app-footer {
-    padding: 20px 15px;
-  }
-}
-.loading-container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
+.footer-links a:hover{
+    color:white;
 }

@@ -1,5 +1,11 @@
 // Mock data for development and testing
 // Replace with actual API calls in production
+import microscopeImg from "../assets/images/microscope.png";
+import multimeterImg from "../assets/images/multimeter.png";
+import oscilloscopeImg from "../assets/images/oscilloscope.png";
+import powerSupplyImg from "../assets/images/power-supply.png";
+import solderingStationImg from "../assets/images/soldering-station.png";
+import logicAnalyzerImg from "../assets/images/logic-analyzer.png";
 
 export const MOCK_BOOKINGS = [
   {
@@ -102,6 +108,7 @@ export const MOCK_EQUIPMENT = [
     utilizationRate: "82%",
     totalBookings: 45,
     description: "2 Channel Digital Oscilloscope 100MHz",
+    image: oscilloscopeImg,
   },
   {
     id: 2,
@@ -117,6 +124,7 @@ export const MOCK_EQUIPMENT = [
     utilizationRate: "76%",
     totalBookings: 38,
     description: "Arduino Uno R3 Development Board with sensors",
+    image: multimeterImg,
   },
   {
     id: 3,
@@ -132,6 +140,7 @@ export const MOCK_EQUIPMENT = [
     utilizationRate: "69%",
     totalBookings: 32,
     description: "FDM 3D Printer with heated bed",
+    image: microscopeImg,
   },
   {
     id: 4,
@@ -147,6 +156,7 @@ export const MOCK_EQUIPMENT = [
     utilizationRate: "58%",
     totalBookings: 28,
     description: "RF Network Analyzer 1MHz-6GHz",
+    image: logicAnalyzerImg,
   },
   {
     id: 5,
@@ -162,9 +172,25 @@ export const MOCK_EQUIPMENT = [
     utilizationRate: "63%",
     totalBookings: 31,
     description: "Siemens S7-1200 PLC Training System",
+    image: powerSupplyImg,
+  },
+  {
+    id: 6,
+    name: "Soldering Station",
+    assetId: "EQ-146",
+    labId: 6,
+    labName: "Electronics Lab",
+    category: "Assembly & Repair",
+    status: "available",
+    condition: "excellent",
+    lastMaintenance: "2026-06-25",
+    nextMaintenance: "2026-08-10",
+    utilizationRate: "71%",
+    totalBookings: 24,
+    description: "Temperature Controlled Digital Soldering Station",
+    image: solderingStationImg,
   },
 ];
-
 export const MOCK_FAULTS = [
   {
     id: 1,
@@ -314,15 +340,5 @@ export const MOCK_USERS = [
     joinDate: "2023-08-10",
     createdAt: "2023-08-10T08:00:00Z",
   },
-  {
-    id: 8,
-    userId: "ADM001",
-    name: "Admin User",
-    email: "admin@college.edu",
-    role: "ADMIN",
-    department: "Administration",
-    status: "active",
-    joinDate: "2023-07-01",
-    createdAt: "2023-07-01T08:00:00Z",
-  },
+  
 ];

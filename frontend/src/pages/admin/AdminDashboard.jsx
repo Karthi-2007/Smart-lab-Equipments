@@ -28,7 +28,6 @@ function AdminDashboard() {
           <p className="review-eyebrow">Admin Portal</p>
           <h1>Smart Lab Control Center</h1>
         </div>
-        <Link to="/logout" className="ghost-link">Logout</Link>
       </header>
 
       <section className="card-grid">
